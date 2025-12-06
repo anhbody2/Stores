@@ -8,8 +8,6 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use InvalidArgumentException;
-use LogicException;
 use Override;
 
 /**
@@ -48,13 +46,19 @@ final readonly class BigRational extends BigNumber
             }
 
             if ($denominator->isNegative()) {
-                $numerator = $numerator->negated();
+                $numerator   = $numerator->negated();
                 $denominator = $denominator->negated();
             }
         }
 
-        $this->numerator = $numerator;
+        $this->numerator   = $numerator;
         $this->denominator = $denominator;
+    }
+
+    #[Override]
+    protected static function from(BigNumber $number): static
+    {
+        return $number->toBigRational();
     }
 
     /**
@@ -75,8 +79,8 @@ final readonly class BigRational extends BigNumber
     public static function nd(
         BigNumber|int|float|string $numerator,
         BigNumber|int|float|string $denominator,
-    ): BigRational {
-        $numerator = BigInteger::of($numerator);
+    ) : BigRational {
+        $numerator   = BigInteger::of($numerator);
         $denominator = BigInteger::of($denominator);
 
         return new BigRational($numerator, $denominator, true);
@@ -87,7 +91,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public static function zero(): BigRational
+    public static function zero() : BigRational
     {
         /** @var BigRational|null $zero */
         static $zero;
@@ -104,7 +108,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public static function one(): BigRational
+    public static function one() : BigRational
     {
         /** @var BigRational|null $one */
         static $one;
@@ -121,7 +125,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public static function ten(): BigRational
+    public static function ten() : BigRational
     {
         /** @var BigRational|null $ten */
         static $ten;
@@ -136,7 +140,7 @@ final readonly class BigRational extends BigNumber
     /**
      * @pure
      */
-    public function getNumerator(): BigInteger
+    public function getNumerator() : BigInteger
     {
         return $this->numerator;
     }
@@ -144,7 +148,7 @@ final readonly class BigRational extends BigNumber
     /**
      * @pure
      */
-    public function getDenominator(): BigInteger
+    public function getDenominator() : BigInteger
     {
         return $this->denominator;
     }
@@ -154,7 +158,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function quotient(): BigInteger
+    public function quotient() : BigInteger
     {
         return $this->numerator->quotient($this->denominator);
     }
@@ -164,7 +168,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function remainder(): BigInteger
+    public function remainder() : BigInteger
     {
         return $this->numerator->remainder($this->denominator);
     }
@@ -176,7 +180,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function quotientAndRemainder(): array
+    public function quotientAndRemainder() : array
     {
         return $this->numerator->quotientAndRemainder($this->denominator);
     }
@@ -190,12 +194,12 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function plus(BigNumber|int|float|string $that): BigRational
+    public function plus(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
-        $numerator = $this->numerator->multipliedBy($that->denominator);
-        $numerator = $numerator->plus($that->numerator->multipliedBy($this->denominator));
+        $numerator   = $this->numerator->multipliedBy($that->denominator);
+        $numerator   = $numerator->plus($that->numerator->multipliedBy($this->denominator));
         $denominator = $this->denominator->multipliedBy($that->denominator);
 
         return new BigRational($numerator, $denominator, false);
@@ -210,12 +214,12 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function minus(BigNumber|int|float|string $that): BigRational
+    public function minus(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
-        $numerator = $this->numerator->multipliedBy($that->denominator);
-        $numerator = $numerator->minus($that->numerator->multipliedBy($this->denominator));
+        $numerator   = $this->numerator->multipliedBy($that->denominator);
+        $numerator   = $numerator->minus($that->numerator->multipliedBy($this->denominator));
         $denominator = $this->denominator->multipliedBy($that->denominator);
 
         return new BigRational($numerator, $denominator, false);
@@ -230,11 +234,11 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function multipliedBy(BigNumber|int|float|string $that): BigRational
+    public function multipliedBy(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
-        $numerator = $this->numerator->multipliedBy($that->numerator);
+        $numerator   = $this->numerator->multipliedBy($that->numerator);
         $denominator = $this->denominator->multipliedBy($that->denominator);
 
         return new BigRational($numerator, $denominator, false);
@@ -249,11 +253,11 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function dividedBy(BigNumber|int|float|string $that): BigRational
+    public function dividedBy(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
-        $numerator = $this->numerator->multipliedBy($that->denominator);
+        $numerator   = $this->numerator->multipliedBy($that->denominator);
         $denominator = $this->denominator->multipliedBy($that->numerator);
 
         return new BigRational($numerator, $denominator, true);
@@ -262,11 +266,11 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns this number exponentiated to the given value.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      *
      * @pure
      */
-    public function power(int $exponent): BigRational
+    public function power(int $exponent) : BigRational
     {
         if ($exponent === 0) {
             $one = BigInteger::one();
@@ -281,7 +285,7 @@ final readonly class BigRational extends BigNumber
         return new BigRational(
             $this->numerator->power($exponent),
             $this->denominator->power($exponent),
-            false,
+            false
         );
     }
 
@@ -294,7 +298,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function reciprocal(): BigRational
+    public function reciprocal() : BigRational
     {
         return new BigRational($this->denominator, $this->numerator, true);
     }
@@ -304,7 +308,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function abs(): BigRational
+    public function abs() : BigRational
     {
         return new BigRational($this->numerator->abs(), $this->denominator, false);
     }
@@ -314,7 +318,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function negated(): BigRational
+    public function negated() : BigRational
     {
         return new BigRational($this->numerator->negated(), $this->denominator, false);
     }
@@ -324,7 +328,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public function simplified(): BigRational
+    public function simplified() : BigRational
     {
         $gcd = $this->numerator->gcd($this->denominator);
 
@@ -335,19 +339,19 @@ final readonly class BigRational extends BigNumber
     }
 
     #[Override]
-    public function compareTo(BigNumber|int|float|string $that): int
+    public function compareTo(BigNumber|int|float|string $that) : int
     {
         return $this->minus($that)->getSign();
     }
 
     #[Override]
-    public function getSign(): int
+    public function getSign() : int
     {
         return $this->numerator->getSign();
     }
 
     #[Override]
-    public function toBigInteger(): BigInteger
+    public function toBigInteger() : BigInteger
     {
         $simplified = $this->simplified();
 
@@ -359,41 +363,40 @@ final readonly class BigRational extends BigNumber
     }
 
     #[Override]
-    public function toBigDecimal(): BigDecimal
+    public function toBigDecimal() : BigDecimal
     {
         return $this->numerator->toBigDecimal()->exactlyDividedBy($this->denominator);
     }
 
     #[Override]
-    public function toBigRational(): BigRational
+    public function toBigRational() : BigRational
     {
         return $this;
     }
 
     #[Override]
-    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
 
     #[Override]
-    public function toInt(): int
+    public function toInt() : int
     {
         return $this->toBigInteger()->toInt();
     }
 
     #[Override]
-    public function toFloat(): float
+    public function toFloat() : float
     {
         $simplified = $this->simplified();
-
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
     #[Override]
-    public function __toString(): string
+    public function __toString() : string
     {
-        $numerator = (string) $this->numerator;
+        $numerator   = (string) $this->numerator;
         $denominator = (string) $this->denominator;
 
         if ($denominator === '1') {
@@ -422,23 +425,17 @@ final readonly class BigRational extends BigNumber
      *
      * @param array{numerator: BigInteger, denominator: BigInteger} $data
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function __unserialize(array $data): void
     {
         /** @phpstan-ignore isset.initializedProperty */
         if (isset($this->numerator)) {
-            throw new LogicException('__unserialize() is an internal function, it must not be called directly.');
+            throw new \LogicException('__unserialize() is an internal function, it must not be called directly.');
         }
 
         /** @phpstan-ignore deadCode.unreachable */
         $this->numerator = $data['numerator'];
         $this->denominator = $data['denominator'];
-    }
-
-    #[Override]
-    protected static function from(BigNumber $number): static
-    {
-        return $number->toBigRational();
     }
 }
