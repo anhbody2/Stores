@@ -1,0 +1,81 @@
+   body {
+        background: #f5f7fa;
+        font-family: "Roboto", sans-serif;
+    }
+
+    #content {
+        padding-top: 60px;
+        
+    }
+
+    .beta-form-checkout {
+        max-width: 400px;      /* Giới hạn độ rộng */
+        margin: auto;          /* Căn giữa form */
+        padding: 25px 30px;
+    }
+
+    .beta-form-checkout {
+        box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    h4 {
+        text-align: center;
+        font-weight: 600;
+        color: #333;
+        font-size: 30px;
+    }
+
+    .form-block {
+        margin-bottom: 18px;
+    }
+
+    .form-block label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .form-block input {
+        width: 100%;
+        border: 1px solid #ccd1d9;
+        border-radius: 6px;
+        padding: 10px 1px;
+        transition: 0.2s;
+    }
+
+    .form-block input:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
+        outline: none;
+    }
+
+    /* Button */
+    .btn-primary {
+        width: 100%;
+        padding: 10px 0;
+        font-weight: 600;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #4e9af1, #076cd6);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+
+
+    .text-center {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 15px;
+        color: #444;
+    }
+
+    .text-center a {
+        font-weight: 600;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .text-center a:hover {
+        text-decoration: underline;
+    }

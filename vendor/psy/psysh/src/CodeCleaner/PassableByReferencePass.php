@@ -66,9 +66,7 @@ class PassableByReferencePass extends CodeCleanerPass
                     continue;
                 }
 
-                // Named arguments were added in php-parser 4.1, so we need to check if the property exists
-                $key = (\property_exists($arg, 'name') && $arg->name !== null) ? $arg->name->name : $position;
-                $args[$key] = $arg;
+                $args[$arg->name !== null ? $arg->name->name : $position] = $arg;
             }
 
             foreach ($refl->getParameters() as $key => $param) {

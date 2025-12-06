@@ -12,7 +12,6 @@
 namespace Psy;
 
 use Psy\Exception\DeprecatedException;
-use Psy\Exception\InvalidManualException;
 use Psy\Exception\RuntimeException;
 use Psy\ExecutionLoop\ExecutionLoggingListener;
 use Psy\ExecutionLoop\InputLoggingListener;
@@ -1761,12 +1760,7 @@ class Configuration
         $this->manualDbFile = (string) $filename;
 
         // Reconfigure SignatureFormatter with new manual database
-        try {
-            SignatureFormatter::setManual($this->getManual());
-        } catch (InvalidManualException $e) {
-            // Show user-friendly error for invalid explicitly configured manual
-            throw new \InvalidArgumentException($e->getMessage(), 0, $e);
-        }
+        SignatureFormatter::setManual($this->getManual());
     }
 
     /**
@@ -1810,20 +1804,14 @@ class Configuration
     {
         if (!isset($this->manualDb)) {
             $dbFile = $this->getManualDbFile();
-            if ($dbFile !== null && \is_file($dbFile) && \substr($dbFile, -7) === '.sqlite') {
+            if ($dbFile !== null && \is_file($dbFile) && \str_ends_with($dbFile, '.sqlite')) {
                 try {
                     $this->manualDb = new \PDO('sqlite:'.$dbFile);
-
-                    // Validate the database has the required structure
-                    $result = $this->manualDb->query("SELECT name FROM sqlite_master WHERE type='table' AND name='php_manual'");
-                    if ($result === false || $result->fetchColumn() === false) {
-                        throw new InvalidManualException('Manual database is missing required tables', $dbFile);
-                    }
                 } catch (\PDOException $e) {
                     if ($e->getMessage() === 'could not find driver') {
                         throw new RuntimeException('SQLite PDO driver not found', 0, $e);
                     } else {
-                        throw new InvalidManualException('Invalid SQLite manual database: '.$e->getMessage(), $dbFile, 0, $e);
+                        throw $e;
                     }
                 }
             }
@@ -1875,13 +1863,9 @@ class Configuration
         $localMeta = null;
 
         if ($localFile !== null && \is_file($localFile)) {
-            try {
-                $localManual = $this->loadManualFromFile($localFile);
-                if ($localManual !== null) {
-                    $localMeta = $localManual->getMeta();
-                }
-            } catch (InvalidManualException $e) {
-                // Auto-discovered file is invalid - fall back to bundled
+            $localManual = $this->loadManualFromFile($localFile);
+            if ($localManual !== null) {
+                $localMeta = $localManual->getMeta();
             }
         }
 
@@ -1931,15 +1915,13 @@ class Configuration
      * @param string $file
      *
      * @return ManualInterface|null
-     *
-     * @throws InvalidManualException if manual file is invalid
      */
     private function loadManualFromFile(string $file)
     {
         // Detect format by extension
-        if (\substr($file, -4) === '.php') {
+        if (\str_ends_with($file, '.php')) {
             return new V3Manual($file);
-        } elseif (\substr($file, -7) === '.sqlite') {
+        } elseif (\str_ends_with($file, '.sqlite')) {
             // Legacy v2 format
             if ($db = $this->getManualDb()) {
                 return new V2Manual($db);
@@ -2219,13 +2201,18 @@ class Configuration
 
         // Determine format from current manual file extension, default to v3
         $format = 'php';
-        if ($manualFile && \substr($manualFile, -7) === '.sqlite') {
+        if ($manualFile && \str_ends_with($manualFile, '.sqlite')) {
             $format = 'sqlite';
         }
 
         $interval = $always ? ManualUpdater\Checker::ALWAYS : $this->getUpdateManualCheck();
         switch ($interval) {
             case ManualUpdater\Checker::ALWAYS:
+                // Use GH CLI if available, otherwise GitHub API
+                if (\shell_exec('which gh 2>/dev/null')) {
+                    return new ManualUpdater\GhChecker($lang, $format, $currentVersion, $currentLang);
+                }
+
                 return new ManualUpdater\GitHubChecker($lang, $format, $currentVersion, $currentLang);
 
             case ManualUpdater\Checker::DAILY:
@@ -2236,7 +2223,12 @@ class Configuration
                     return null; // No writable cache file
                 }
 
-                $baseChecker = new ManualUpdater\GitHubChecker($lang, $format, $currentVersion, $currentLang);
+                // Create base checker (GH CLI or GitHub API)
+                if (\shell_exec('which gh 2>/dev/null')) {
+                    $baseChecker = new ManualUpdater\GhChecker($lang, $format, $currentVersion, $currentLang);
+                } else {
+                    $baseChecker = new ManualUpdater\GitHubChecker($lang, $format, $currentVersion, $currentLang);
+                }
 
                 return new ManualUpdater\IntervalChecker($baseChecker, $checkFile, $interval);
 
