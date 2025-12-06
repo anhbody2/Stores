@@ -23,7 +23,7 @@ class UserController extends Controller
             $user = Auth::user();
             Session::put('user', $user);
             
-            echo '<script>alert("Đăng nhập thành công.");window.location.assign("trangchu");</script>';
+            echo '<script>alert("Đăng nhập thành công.");window.location.assign("/");</script>';
         } else {
             echo '<script>alert("Đăng nhập thất bại.");window.location.assign("login");</script>';
         }
@@ -36,7 +36,7 @@ public function GetLogin(){
     {
         Session::forget('user');
         Session::forget('cart');
-        return redirect('/trangchu');
+        return redirect('/');
     }
 
 public function Logout(Request $request)
