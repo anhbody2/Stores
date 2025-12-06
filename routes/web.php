@@ -6,7 +6,7 @@ use App\Http\Controllers\HuyController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('main_page.main');
 });
 
 Route::get('/huy', [HuyController::class, 'index']);
