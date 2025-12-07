@@ -27,7 +27,8 @@
                             
                             <div class="card-body">
                                 <!-- Login Form -->
-                                <form id="loginForm" method="post" action="#">
+                                <form id="loginForm" method="post" action="/login">
+                                    @csrf
                                     <!-- Email Input -->
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email Address</label>
