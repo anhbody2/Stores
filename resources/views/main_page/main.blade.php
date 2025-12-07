@@ -1,11 +1,6 @@
 @extends('entry')
 @section('content')
 <body>
-    <!-- Spinner Start -->
-
-    <!-- Spinner End -->
-
-
 
     <!-- Carousel Start -->
     <div class="container-fluid p-0 mb-5">

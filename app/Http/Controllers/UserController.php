@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\Console\Input\Input;
 
+use function Laravel\Prompts\error;
 use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
@@ -17,20 +18,21 @@ class UserController extends Controller
     {
         $login = [
             'email' => $request->input('email'),
-            'password' => $request->input('pw')
+            'password' => $request->input('password')
         ];
         if (Auth::attempt($login)) {
             $user = Auth::user();
             Session::put('user', $user);
-            
+
             echo '<script>alert("Đăng nhập thành công.");window.location.assign("/");</script>';
         } else {
-            echo '<script>alert("Đăng nhập thất bại.");window.location.assign("login");</script>';
+            echo '<script>alert("Đăng nhập thất bại.");window.location.assign("/login");</script>';
         }
     }
-public function GetLogin(){
-     return view('users_page.login');
-}
+    public function GetLogin()
+    {
+        return view('users_page.login');
+    }
 
     public function GetLogout()
     {
@@ -39,32 +41,41 @@ public function GetLogin(){
         return redirect('/');
     }
 
-public function Logout(Request $request)
-{
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    Session::forget('cart');
-    Session::forget('user');
-    return redirect('/trangchu')->with('success', 'Đăng xuất thành công.');
-}
+    public function Logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        Session::forget('cart');
+        Session::forget('user');
+        return redirect('/trangchu')->with('success', 'Đăng xuất thành công.');
+    }
 
-    public function GetUser(){
+    public function GetUser()
+    {
         return view('users_page.register');
     }
-    
-    public function Register(Request $request)
-    {
+
+ public function Register(Request $request)
+{
+    try {
         $input = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'c_password' => 'required|same:password'
+            'c_password' => 'required|same:password',
+            'is_admin' => '0'
         ]);
 
         $input['password'] = bcrypt($input['password']);
+
         User::create($input);
 
         echo '<script>alert("Đăng ký thành công. Vui lòng đăng nhập.");window.location.assign("login");</script>';
+    } catch (\Exception $e) {
+        echo "<script>console.log('Register failed: " . $e->getMessage() . "');</script>";
+        echo "<script>alert('Register failed');window.location.assign('register');</script>";
     }
+}
+
 }
