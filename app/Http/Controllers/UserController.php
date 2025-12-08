@@ -63,8 +63,7 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'c_password' => 'required|same:password',
-            'is_admin' => '0'
+            'c_password' => 'required|same:password'
         ]);
 
         $input['password'] = bcrypt($input['password']);

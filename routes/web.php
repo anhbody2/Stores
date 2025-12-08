@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
-
+use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return view('main_page.main');
 });
@@ -24,11 +24,15 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('/huy', [HuyController::class, 'index']);
 Route::get('/san-pham/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);
-Route::get('/products/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);
+Route::get('/products/{:id}', [ProductController::class, 'showSupperProVIP']);
 
 // route for category and course creation and storage
 Route::get('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
 
+Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
+// Admin routes
+
+Route::get('/admin', [AdminController::class, 'showadminpage']);
