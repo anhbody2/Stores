@@ -6,6 +6,9 @@ use App\Http\Controllers\HuyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
+
 Route::get('/', function () {
     return view('main_page.main');
 });
@@ -22,3 +25,10 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/huy', [HuyController::class, 'index']);
 Route::get('/san-pham/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);
 Route::get('/products/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);
+
+// route for category and course creation and storage
+Route::get('/categories/create', [CategoryController::class, 'create']);
+Route::post('/categories/store', [CategoryController::class, 'store']);
+
+Route::get('/courses/create', [CourseController::class, 'create']);
+Route::post('/courses/store', [CourseController::class, 'store']);
