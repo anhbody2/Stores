@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ComponentController;
 Route::get('/', function () {
     return view('main_page.main');
 });
@@ -33,6 +33,8 @@ Route::post('/categories/store', [CategoryController::class, 'store']);
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
-// Admin routes
 
-Route::get('/admin', [AdminController::class, 'showadminpage']);
+Route::get('/about', [ComponentController::class, 'getAbout']);
+Route::get('/contact', [ComponentController::class, 'getContact']);
+Route::get('/team', [ComponentController::class, 'getTeam']);
+Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);

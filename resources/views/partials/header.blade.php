@@ -19,7 +19,12 @@
                 </div>
                 <a href="/contact" class="nav-item nav-link">Contact</a>
             </div>
+              @auth
+        <li>     Xin chào, {{ Auth::user()->name }}</li>
+        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+    @else
             <a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i
                     class="fa fa-arrow-right ms-3"></i></a>
+                       @endauth
         </div>
     </nav>
