@@ -48,7 +48,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         Session::forget('cart');
         Session::forget('user');
-        return redirect('/trangchu')->with('success', 'Đăng xuất thành công.');
+        return redirect('/')->with('success', 'Đăng xuất thành công.');
     }
 
     public function GetUser()
