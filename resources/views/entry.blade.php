@@ -20,7 +20,7 @@
     @vite('resources/css/main/bootstrap.min.css')
     @vite('resources/css/auth/login.css')
     @vite('resources/css/auth/reg.css')
-
+    @vite('resources/css/courses/courses.css')
     @vite('resources/css/product/details.css')
 
     <!-- Animated -->

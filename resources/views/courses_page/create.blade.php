@@ -42,7 +42,7 @@
 
     <label>Image:</label><br>
     <input type="file" name="image"><br><br>
-
+    <input type="text" name="image" placeholder="Image URL"><br><br>
     <button type="submit">Create Course</button>
 </form>
 

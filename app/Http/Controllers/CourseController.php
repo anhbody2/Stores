@@ -7,7 +7,14 @@ use App\Models\Course;
 use App\Models\Category;
 
 class CourseController extends Controller
-{
+{   
+    public function index()
+    {
+        $courses = Course::all();
+        $categories = Category::all(); 
+
+        return view('courses_page.courses', compact('courses', 'categories'));
+    }
     public function create()
     {
         $categories = Category::all();  // for dropdown
@@ -25,7 +32,7 @@ class CourseController extends Controller
             'description' => 'nullable|string',
             'level' => 'required|integer',
             'time_average' => 'nullable|integer',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:2048',
+            'image' => 'nullable',
         ]);
 
         $course = new Course();
@@ -43,6 +50,9 @@ class CourseController extends Controller
             $imageName = time().'_'.$request->image->getClientOriginalName();
             $request->image->move(public_path('images/courses'), $imageName);
             $course->image = 'images/courses/' . $imageName;
+        }
+        else if ($request->input('image')) {
+            $course->image = $request->input('image');
         }
 
         $course->save();
