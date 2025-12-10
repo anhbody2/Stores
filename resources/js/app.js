@@ -1,4 +1,5 @@
 import './bootstrap';
+import './filter';
 // product-detail.js - Xử lý trang chi tiết sản phẩm
 
 document.addEventListener('DOMContentLoaded', function() {
