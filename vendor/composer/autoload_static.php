@@ -42,6 +42,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'a1cfe24d14977df6878b9bf804af2d1c' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Phpunit/Autoload.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         'd1291c7c1e7abfd08c1324473d803ffe' => __DIR__ . '/../..' . '/app/Helpers/ViewHelper.php',
+        '0f55133087f239f6eeafdf382b788199' => __DIR__ . '/../..' . '/app/Helpers/CourseHelper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -532,6 +533,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
     public static $classMap = array (
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
         'App\\Http\\Controllers\\CategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/CategoryController.php',
+        'App\\Http\\Controllers\\ComponentController' => __DIR__ . '/../..' . '/app/Http/Controllers/ComponentController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CourseController' => __DIR__ . '/../..' . '/app/Http/Controllers/CourseController.php',
         'App\\Http\\Controllers\\HuyController' => __DIR__ . '/../..' . '/app/Http/Controllers/HuyController.php',

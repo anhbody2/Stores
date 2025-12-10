@@ -1,18 +1,21 @@
 /********** Template CSS **********/
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Montserrat", sans-serif !important;
     font-size: 15px;
     color: #565656;
     background: #F0FBFC;
 }
-.logo{
+
+.logo {
     font-size: 100px;
 }
-.logo-text{
+
+.logo-text {
     font-size: 108px;
     line-height: 115px;
     font-family: serif;
 }
+
 :root {
     --primary: #565656;
     --light: #F0FBFC;
@@ -112,7 +115,7 @@ body {
 }
 
 @media (max-width: 991.98px) {
-    .navbar-light .navbar-nav .nav-link  {
+    .navbar-light .navbar-nav .nav-link {
         margin-right: 0;
         padding: 10px 0;
     }
@@ -124,6 +127,8 @@ body {
 
 .navbar-light .navbar-brand,
 .navbar-light a.btn {
+    text-transform: uppercase;
+    font-size: 15px;
     height: 75px;
 }
 
@@ -168,7 +173,7 @@ body {
         position: relative;
         min-height: 500px;
     }
-    
+
     .header-carousel .owl-carousel-item img {
         position: absolute;
         width: 100%;
@@ -218,7 +223,7 @@ body {
     background: rgba(15, 23, 43, .7);
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
+.breadcrumb-item+.breadcrumb-item::before {
     color: var(--light);
 }
 
@@ -329,6 +334,7 @@ body {
 }
 
 @media (min-width: 768px) {
+
     .testimonial-carousel::before,
     .testimonial-carousel::after {
         width: 200px;
@@ -336,6 +342,7 @@ body {
 }
 
 @media (min-width: 992px) {
+
     .testimonial-carousel::before,
     .testimonial-carousel::after {
         width: 300px;

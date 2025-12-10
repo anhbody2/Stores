@@ -5,15 +5,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Category;
-
+use App\Models\Difficult;
 class CourseController extends Controller
-{   
+{
     public function index()
     {
+        $difficulties = Difficult::all();
         $courses = Course::all();
-        $categories = Category::all(); 
+        $categories = Category::all();
+        $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
+            return [
+                'id' => $course->id,
+                'name' => $course->name,
+                'title' => $course->name,
+                'description' => $course->description,
+                'image' => $course->image,
+                'tutors' => $course->tutors,
+                'rate' => $course->rate,
+                'star_html' => star_rating($course->rate),
+                'time_average' => $course->time_average,
+                'price' => $course->price,
+                'enrolled' => $course->enrolled,
 
-        return view('courses_page.courses', compact('courses', 'categories'));
+                'category' => $course->level,
+                'category_name' => optional(
+                    $categories->firstWhere('category_id', $course->level)
+                )->category_name ?? 'Unknown',
+
+                'difficulty' => $course->difficulty,
+                'difficulty_name' => optional(
+                    $difficulties->firstWhere('id', $course->difficulty)
+                )->name ?? 'Unknown'
+            ];
+        });
+        return view('courses_page.courses', [
+            'difficulties' => $difficulties,
+            'courses' => $courses,
+            'coursesJson' => $coursesJson,
+            'categories' => $categories
+        ]);
     }
     public function create()
     {
@@ -47,11 +77,10 @@ class CourseController extends Controller
 
         // Image Upload
         if ($request->hasFile('image')) {
-            $imageName = time().'_'.$request->image->getClientOriginalName();
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
             $request->image->move(public_path('images/courses'), $imageName);
             $course->image = 'images/courses/' . $imageName;
-        }
-        else if ($request->input('image')) {
+        } else if ($request->input('image')) {
             $course->image = $request->input('image');
         }
 
