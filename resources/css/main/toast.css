@@ -1,0 +1,19 @@
+.global-toast {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 99999;
+}
+
+.global-toast.show {
+    top: 20px;
+    opacity: 1;
+}

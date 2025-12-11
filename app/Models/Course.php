@@ -11,7 +11,7 @@ class Course extends Model
     protected $table = 'courses';
     public function category()
 {
-    return $this->belongsTo(Category::class, 'level');
+    return $this->belongsTo(Category::class, 'level', 'category_id');
 }
 
 }

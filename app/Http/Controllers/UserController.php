@@ -24,9 +24,11 @@ class UserController extends Controller
             $user = Auth::user();
             Session::put('user', $user);
 
-            echo '<script>alert("Đăng nhập thành công.");window.location.assign("/");</script>';
+            return redirect('/')->with('toastMessage', 'Đăng nhập thành công.')
+                ->with('toastRedirect', '/');
         } else {
-            echo '<script>alert("Đăng nhập thất bại.");window.location.assign("/login");</script>';
+            return redirect('/login')->with('toastMessage', 'Đăng nhập thất bại.')
+                ->with('toastRedirect', '/login');
         }
     }
     public function GetLogin()
@@ -56,25 +58,24 @@ class UserController extends Controller
         return view('users_page.register');
     }
 
- public function Register(Request $request)
-{
-    try {
-        $input = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'c_password' => 'required|same:password'
-        ]);
+    public function Register(Request $request)
+    {
+        try {
+            $input = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'password' => 'required',
+                'c_password' => 'required|same:password'
+            ]);
 
-        $input['password'] = bcrypt($input['password']);
+            $input['password'] = bcrypt($input['password']);
 
-        User::create($input);
+            User::create($input);
 
-        echo '<script>alert("Đăng ký thành công. Vui lòng đăng nhập.");window.location.assign("login");</script>';
-    } catch (\Exception $e) {
-        echo "<script>console.log('Register failed: " . $e->getMessage() . "');</script>";
-        echo "<script>alert('Register failed');window.location.assign('register');</script>";
+            echo '<script>alert("Đăng ký thành công. Vui lòng đăng nhập.");window.location.assign("login");</script>';
+        } catch (\Exception $e) {
+            echo "<script>console.log('Register failed: " . $e->getMessage() . "');</script>";
+            echo "<script>alert('Register failed');window.location.assign('register');</script>";
+        }
     }
-}
-
 }
