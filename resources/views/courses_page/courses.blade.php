@@ -116,11 +116,11 @@
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <span class="small">Courses {{ $category->courseCount }}</span>
+                                <span class="small">Courses {{ $category->courses_count }}</span>
                                 <span class="small">{{ $category->percentage }}%</span>
                             </div>
                             <div class="progress category-progress">
-                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%; background-color: ${category.color};"
+                                <div class="progress-bar" role="progressbar" style="width: {{ $category->percentage }}%;"
                                     aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
