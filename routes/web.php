@@ -22,6 +22,7 @@ Route::post('/register', [UserController::class, 'register']);
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+
 Route::get('/huy', [HuyController::class, 'index']);
 Route::get('/course/{id}', [CourseController::class, 'show']);
 Route::get('/san-pham/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);

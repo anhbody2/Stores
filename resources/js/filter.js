@@ -115,7 +115,10 @@ function renderCourses(list) {
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-    <a href="/course/${course.id}" class="btn btn-sm btn-outline-primary me-md-2">View Details</a>
+    <a href="/course/${course.course_id}" 
+   class="btn btn-sm btn-outline-primary me-md-2">View Details</a>
+
+
     <button class="btn btn-sm btn-primary">Enroll Now</button>
 </div>
 

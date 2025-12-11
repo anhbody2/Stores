@@ -14,31 +14,34 @@ class CourseController extends Controller
         $difficulties = Difficult::all();
         $courses = Course::all();
         $categories = Category::all();
-        $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
-            return [
-                'id' => $course->course_id, // SỬA: course_id thay vì id
-                'name' => $course->name,
-                'title' => $course->name,
-                'description' => $course->description,
-                'image' => $course->image,
-                'tutors' => $course->tutors,
-                'rate' => $course->rate,
-                'star_html' => star_rating($course->rate),
-                'time_average' => $course->time_average,
-                'price' => $course->price,
-                'enrolled' => $course->enrolled,
+       $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
+    return [
+        'course_id' => $course->course_id, // ✔ CHUẨN
+        'name' => $course->name,
+        'title' => $course->name,
+        'description' => $course->description,
+        'image' => $course->image,
+        'tutors' => $course->tutors,
+        'rate' => $course->rate,
+        'star_html' => star_rating($course->rate),
+        'time_average' => $course->time_average,
+        'price' => $course->price,
+        'enrolled' => $course->enrolled,
 
-                'category' => $course->level,
-                'category_name' => optional(
-                    $categories->firstWhere('category_id', $course->level)
-                )->category_name ?? 'Unknown',
+        // CATEGORY
+        'category' => $course->level, // ✔ filter dùng đúng
+        'category_name' => optional(
+            $categories->firstWhere('category_id', $course->level)
+        )->category_name ?? 'Unknown',
 
-                'difficulty' => $course->difficulty,
-                'difficulty_name' => optional(
-                    $difficulties->firstWhere('id', $course->difficulty)
-                )->name ?? 'Unknown'
-            ];
-        });
+        // DIFFICULTY
+        'difficulty' => $course->difficulty,
+        'difficulty_name' => optional(
+            $difficulties->firstWhere('id', $course->difficulty)
+        )->name ?? 'Unknown'
+    ];
+});
+
         
         return view('courses_page.courses', [
             'difficulties' => $difficulties,
@@ -51,20 +54,30 @@ class CourseController extends Controller
     /**
      * Hiển thị chi tiết khóa học
      */
-    public function show($id)
+    // Thêm vào CourseController
+public function enroll($id)
 {
-    // SỬA DÒNG NÀY
-    $course = Course::where('course_id', $id)->firstOrFail();
+    $course = Course::findOrFail($id);
     
+    // Chuyển đến trang checkout
+    return redirect()->route('checkout', ['course_id' => $course->course_id])
+                    ->with('course', $course);
+}
+public function show($id)
+{
+    $course = Course::where('course_id', $id)->firstOrFail();
+
     $category = Category::where('category_id', $course->level)->first();
     $difficulty = Difficult::find($course->difficulty);
-    
-    return view('detail', [
+
+    return view('courses_page.detail', [
         'course' => $course,
         'category_name' => $category->category_name ?? 'Unknown',
         'difficulty_name' => $difficulty->name ?? 'Unknown'
     ]);
 }
+
+
 
     public function create()
     {
