@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Category;
 use App\Models\Difficult;
+
 class CourseController extends Controller
 {
     public function index()
@@ -15,7 +16,7 @@ class CourseController extends Controller
         $categories = Category::all();
         $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
             return [
-                'id' => $course->id,
+                'id' => $course->course_id, // SỬA: course_id thay vì id
                 'name' => $course->name,
                 'title' => $course->name,
                 'description' => $course->description,
@@ -38,6 +39,7 @@ class CourseController extends Controller
                 )->name ?? 'Unknown'
             ];
         });
+        
         return view('courses_page.courses', [
             'difficulties' => $difficulties,
             'courses' => $courses,
@@ -45,6 +47,25 @@ class CourseController extends Controller
             'categories' => $categories
         ]);
     }
+    
+    /**
+     * Hiển thị chi tiết khóa học
+     */
+    public function show($id)
+{
+    // SỬA DÒNG NÀY
+    $course = Course::where('course_id', $id)->firstOrFail();
+    
+    $category = Category::where('category_id', $course->level)->first();
+    $difficulty = Difficult::find($course->difficulty);
+    
+    return view('detail', [
+        'course' => $course,
+        'category_name' => $category->category_name ?? 'Unknown',
+        'difficulty_name' => $difficulty->name ?? 'Unknown'
+    ]);
+}
+
     public function create()
     {
         $categories = Category::all();  // for dropdown
