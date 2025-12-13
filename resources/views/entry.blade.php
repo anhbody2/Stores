@@ -31,6 +31,8 @@
     @vite('resources/css/assets/owl.carousel.min.css')
 
 
+  
+
 </head>
 
 <body>
@@ -66,5 +68,4 @@
     </script>
     @endif
 </body>
-
 </html>
