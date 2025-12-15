@@ -78,4 +78,5 @@ class UserController extends Controller
             echo "<script>alert('Register failed');window.location.assign('register');</script>";
         }
     }
+ 
 }

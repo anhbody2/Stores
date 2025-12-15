@@ -26,6 +26,7 @@ class CourseController extends Controller
         });
         $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
             return [
+                'id' => $course->course_id,
                 'course_id' => $course->course_id,
                 'name' => $course->name,
                 'title' => $course->name,
@@ -215,5 +216,53 @@ private function getEnrolledCourseIds($user)
 
         // Redirect đến trang checkout
         return redirect()->route('course.checkout', $id);
+    }
+    public function edit($id)
+    {
+        $course = Course::findOrFail($id);
+        $categories = Category::all();
+        return view('courses_page.edit', compact('course', 'categories'));
+    }
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'rate' => 'nullable|numeric',
+            'enrolled' => 'nullable|integer',
+            'price' => 'required|numeric',
+            'publish_status' => 'required|boolean',
+            'description' => 'nullable|string',
+            'level' => 'required|integer',
+            'time_average' => 'nullable|integer',
+            'image' => 'nullable',
+        ]);
+        $course = Course::findOrFail($request->id);
+        $course->name = $request->name;
+        $course->rate = $request->rate;
+        $course->enrolled = $request->enrolled;
+        $course->price = $request->price;
+        $course->publish_status = $request->publish_status;
+        $course->description = $request->description;
+        $course->level = $request->level;
+        $course->time_average = $request->time_average;
+
+        // Image Upload
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->move(public_path('images/courses'), $imageName);
+            $course->image = 'images/courses/' . $imageName;
+        } else if ($request->input('image')) {
+            $course->image = $request->input('image');
+        }
+
+        $course->save();
+
+        return redirect()->back()->with('success', 'Course added successfully!');
+    }
+    public function softDelete($id)
+    {
+        $course = Course::find($id);
+        $course->delete();
+        return redirect()->back()->with('success', 'Course added successfully!');
     }
 }

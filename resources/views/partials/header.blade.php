@@ -19,10 +19,16 @@
                 </div>
                 <a href="/contact" class="nav-item nav-link">Contact</a>
                 @auth
-                <a href="/user" class="nav-item nav-link">User</a>
+                @if(auth()->user()->isadmin)
+                <a href="/admin/dashboard" class="nav-item nav-link">Admin</a>
                 @else
-                <a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block ">Join Now<i
-                        class="fa fa-arrow-right ms-3"></i></a>
+                <a href="/user" class="nav-item nav-link">User</a>
+                @endif
+                @else
+                <a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">
+                    Join Now
+                    <i class="fa fa-arrow-right ms-3"></i>
+                </a>
                 @endauth
             </div>
 

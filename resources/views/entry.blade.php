@@ -31,14 +31,16 @@
     @vite('resources/css/lib/animate/animate.min.css')
     @vite('resources/css/assets/owl.carousel.min.css')
 
+    @vite('resources/css/admin/admin.css')
 
 </head>
 
 <body>
 
     {{-- HEADER --}}
+    @if (empty($header))
     @include('partials.header')
-
+    @endif
     {{-- MAIN CONTENT --}}
     @yield('content')
 

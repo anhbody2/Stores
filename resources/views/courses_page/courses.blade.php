@@ -54,59 +54,7 @@
         <p class="text-muted mb-4">Browse our complete course catalog.</p>
 
         <div id="course-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach($courses as $course)
-            <div class="col">
-                <div class="card course-card h-100">
-                    <img src="{{ $course->image }}" class="card-img-top course-img" alt="{{ $course->title }}">
-
-                    <div class="card-body d-flex flex-column">
-
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-secondary course-category">
-                                {{ $categories->firstWhere('category_id', $course->level)->category_name ?? 'Unknown' }}
-                            </span>
-                            <span class="badge course-difficulty">
-                                {{ $difficulties->firstWhere('id', $course->difficulty)->name ?? 'Unknown' }}
-                            </span>
-                        </div>
-
-                        <h5 class="card-title">{{ $course->name }}</h5>
-                        <p class="card-text flex-grow-1">{{ $course->description }}</p>
-                        <p class="card-text"><i class="fa-solid fa-circle-user"></i> {{ $course->tutors }}</p>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="text-warning">{!! star_rating($course->rate) !!}</span>
-                                <span class="text-muted ms-1">{{ $course->rate }}</span>
-                            </div>
-                            <span class="course-duration">
-                                <i class="fa-regular fa-clock"></i> {{ $course->time_average }}
-                            </span>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div class="course-price">${{ $course->price }}</div>
-                            <span class="text-muted small">
-                                <i class="fa-solid fa-dove"></i> {{ number_format($course->enrolled) }} students
-                            </span>
-                        </div>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <a href="/course/{{ $course->course_id }}" class="btn btn-sm btn-outline-primary me-md-2">View Details</a>
-                            
-                            <!-- Enroll Now Form - FIXED -->
-                            <form action="{{ route('course.enroll', $course->course_id) }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-primary">
-                                    Enroll Now
-                                </button>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            @endforeach
+            
         </div>
 
         <!-- Empty State -->
@@ -155,6 +103,12 @@
                                 <li>{{ $course->name }}</li>
                                 @endforeach
                             </ul>
+                        </div>
+                            
+                        <div class="mt-auto">
+                            <button class="btn btn-outline-primary w-100" onclick="filterByCategory({{ $category-> category_id }})">
+                                Browse {{ $category->category_name }} Courses
+                            </button>
                         </div>
 
                         <button class="btn btn-outline-primary mt-auto w-100"
