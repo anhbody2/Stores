@@ -1,591 +1,899 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --success-color: #4cc9f0;
-            --warning-color: #f8961e;
-            --danger-color: #f72585;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --gray-color: #6c757d;
-            --light-gray: #e9ecef;
-            --border-radius: 10px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
+@extends('entry')
+@php $header = true; @endphp
+@section('content')
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f7fb;
-            color: var(--dark-color);
-            line-height: 1.6;
-        }
-
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            min-height: 100vh;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            background-color: white;
-            box-shadow: var(--box-shadow);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            padding: 0 20px 30px;
-            border-bottom: 1px solid var(--light-gray);
-            margin-bottom: 20px;
-        }
-
-        .logo i {
-            color: var(--primary-color);
-            font-size: 28px;
-            margin-right: 10px;
-        }
-
-        .logo h1 {
-            font-size: 22px;
-            color: var(--primary-color);
-        }
-
-        .nav-links {
-            list-style: none;
-            padding: 0 15px;
-        }
-
-        .nav-links li {
-            margin-bottom: 5px;
-        }
-
-        .nav-links a {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            color: var(--gray-color);
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            background-color: var(--light-gray);
-            color: var(--primary-color);
-        }
-
-        .nav-links a.active {
-            background-color: rgba(67, 97, 238, 0.1);
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .nav-links i {
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            padding: 30px;
-            overflow-y: auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header h2 {
-            color: var(--dark-color);
-            font-size: 28px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: var(--box-shadow);
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            font-size: 24px;
-            color: white;
-        }
-
-        .users-icon {
-            background: linear-gradient(135deg, #4361ee, #3a0ca3);
-        }
-
-        .courses-icon {
-            background: linear-gradient(135deg, #4cc9f0, #4895ef);
-        }
-
-        .enrolled-icon {
-            background: linear-gradient(135deg, #f8961e, #f3722c);
-        }
-
-        .reviews-icon {
-            background: linear-gradient(135deg, #f72585, #b5179e);
-        }
-
-        .stat-info h3 {
-            font-size: 32px;
-            margin-bottom: 5px;
-            color: var(--dark-color);
-        }
-
-        .stat-info p {
-            color: var(--gray-color);
-            font-size: 15px;
-        }
-
-        /* Reviews Section */
-        .reviews-section {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--box-shadow);
-            margin-bottom: 40px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .section-header h3 {
-            font-size: 22px;
-            color: var(--dark-color);
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .review-card {
-            background-color: var(--light-gray);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            text-align: center;
-            transition: var(--transition);
-        }
-
-        .review-card:hover {
-            background-color: #e2e6ea;
-        }
-
-        .stars {
-            color: #ffc107;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .stars i {
-            margin: 0 2px;
-        }
-
-        .review-count {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .review-label {
-            color: var(--gray-color);
-            font-size: 15px;
-        }
-
-        /* Recent Activity */
-        .activity-section {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--box-shadow);
-        }
-
-        .activity-list {
-            list-style: none;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: white;
-            font-size: 16px;
-        }
-
-        .icon-user {
-            background-color: var(--primary-color);
-        }
-
-        .icon-course {
-            background-color: var(--success-color);
-        }
-
-        .icon-review {
-            background-color: var(--danger-color);
-        }
-
-        .activity-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .activity-info p {
-            color: var(--gray-color);
-            font-size: 14px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .dashboard-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                height: auto;
-                position: relative;
-            }
-            
-            .nav-links {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-            
-            .nav-links li {
-                flex-shrink: 0;
-                margin-right: 10px;
-                margin-bottom: 0;
-            }
-            
-            .nav-links a {
-                padding: 10px 15px;
-                white-space: nowrap;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .stat-card {
-                padding: 20px;
-            }
-            
-            .reviews-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
-    </style>
-</head>
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-                <h1>EduAdmin</h1>
+    @auth
+
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <a class="sidebar-brand" href="#">
+            <i class="bi bi-speedometer2"></i>
+            <span>Admin Panel</span>
+        </a>
+
+        <div class="sidebar-heading">Main</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-page="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="users">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="courses">
+                    <i class="bi bi-journal-bookmark"></i>
+                    Courses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="analytics">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" data-page="settings">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-heading">Quick Links</div>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">
+                    <i class="bi bi-calendar-check"></i>
+                    Calendar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">
+                    <i class="bi bi-chat-left-text"></i>
+                    Messages
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">
+                    <i class="bi bi-question-circle"></i>
+                    Help Center
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="content">
+        <!-- Topbar -->
+        <nav id="topbar" class="navbar navbar-expand navbar-light bg-white">
+            <div class="container-fluid">
+                <button class="sidebar-toggler" type="button">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div class="d-none d-md-inline-block ms-auto">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i>
+                                {{ auth()->user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/user"><i class="bi bi-person me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/logout"><i
+                                            class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <ul class="nav-links">
-                <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
-                <li><a href="#"><i class="fas fa-book"></i> Courses</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-            </ul>
-        </aside>
+        </nav>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <h2>Dashboard Overview</h2>
-                <div class="user-profile">
-                    <div class="user-avatar">AD</div>
-                    <div>
-                        <h4>Admin User</h4>
-                        <p>Administrator</p>
-                    </div>
-                </div>
-            </header>
+        <!-- Page Content -->
+        <div class="page-content">
 
-            <!-- Stats Cards -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon users-icon">
-                        <i class="fas fa-users"></i>
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
+
+                <!-- Stats Cards -->
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Total Users</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUsers }}</div>
+                                        <div class="mt-2 mb-0 text-muted text-xs">
+                                            <span class="text-success mr-2"><i class="bi bi-arrow-up"></i> 12.5%</span>
+                                            <span>Since last month</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-people fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-info">
-                        <h3>1,842</h3>
-                        <p>Total Users</p>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Total Courses</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalCourses }}</div>
+                                        <div class="mt-2 mb-0 text-muted text-xs">
+                                            <span class="text-success mr-2"><i class="bi bi-arrow-up"></i> 5.3%</span>
+                                            <span>Since last month</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-journal-bookmark fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            Total Categories</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalCategories }}</div>
+                                        <div class="mt-2 mb-0 text-muted text-xs">
+                                            <span class="text-success mr-2"><i class="bi bi-arrow-up"></i> 18.2%</span>
+                                            <span>Since last month</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-person-check fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                            Total Reviews</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalReviews }}</div>
+                                        <div class="mt-2 mb-0 text-muted text-xs">
+                                            <span class="text-success mr-2"><i class="bi bi-arrow-up"></i> 8.7%</span>
+                                            <span>Since last month</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-star fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon courses-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>47</h3>
-                        <p>Total Courses</p>
+
+                <!-- Reviews by Rating -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Reviews by Rating</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-4 text-center mb-4">
+                                        <div class="review-stars mb-2">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+                                        <h3 class="font-weight-bold">{{ $categorizedReviews['five_star']['count'] }}
+                                        </h3>
+                                        <p class="text-muted">5 Star Reviews</p>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 text-center mb-4">
+                                        <div class="review-stars mb-2">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </div>
+                                        <h3 class="font-weight-bold">{{ $categorizedReviews['four_star']['count'] }}
+                                        </h3>
+                                        <p class="text-muted">4 Star Reviews</p>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 text-center mb-4">
+                                        <div class="review-stars mb-2">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </div>
+                                        <h3 class="font-weight-bold">{{ $categorizedReviews['three_star']['count'] }}
+                                        </h3>
+                                        <p class="text-muted">3 Star Reviews</p>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 text-center mb-4">
+                                        <div class="review-stars mb-2">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </div>
+                                        <h3 class="font-weight-bold">{{ $categorizedReviews['two_star']['count'] }}</h3>
+                                        <p class="text-muted">2 Star Reviews</p>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4 text-center mb-4">
+                                        <div class="review-stars mb-2">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </div>
+                                        <h3 class="font-weight-bold">{{ $categorizedReviews['one_star']['count'] }}</h3>
+                                        <p class="text-muted">1 Star Reviews</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon enrolled-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>3,251</h3>
-                        <p>Total Enrolled</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon reviews-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>892</h3>
-                        <p>Total Reviews</p>
+
+                <!-- Recent Activity -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="m-0 font-weight-bold text-primary">Recent Reviews</h6>
+                                <a href="#" class="btn btn-sm btn-primary">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    @foreach($lastFourReviews as $review)
+
+                                    <div class="list-group-item d-flex align-items-center">
+                                        <div class="me-3">
+                                            <div class="bg-primary rounded-circle p-2 text-white">
+                                                <i class="bi bi-person-plus"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ $review->user-> name ?? 'User XXX' }}</h6>
+                                            <p class="mb-0 text-muted">{{ $review->comment }}</p>
+                                        </div>
+                                        <div class="text-muted small">{{ $review->created_at->diffForHumans() }}</div>
+                                    </div>
+                                    @endforeach
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Reviews Section -->
-            <section class="reviews-section">
-                <div class="section-header">
-                    <h3>Reviews by Rating</h3>
-                    <p>Distribution of course reviews</p>
-                </div>
-                
-                <div class="reviews-grid">
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="review-count">412</div>
-                        <div class="review-label">5 Star Reviews</div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <div class="review-count">203</div>
-                        <div class="review-label">4 Star Reviews</div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <div class="review-count">118</div>
-                        <div class="review-label">3 Star Reviews</div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <div class="review-count">97</div>
-                        <div class="review-label">2 Star Reviews</div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <div class="review-count">62</div>
-                        <div class="review-label">1 Star Reviews</div>
-                    </div>
-                </div>
-            </section>
+            <!-- Users Page -->
+            <div id="users" class="page">
+                <h1 class="h3 mb-4 text-gray-800">Users Management</h1>
 
-            <!-- Recent Activity -->
-            <section class="activity-section">
-                <div class="section-header">
-                    <h3>Recent Activity</h3>
-                    <p>Latest actions in the system</p>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i> Add New User
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Joined Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($users as $user)
+                                    <tr>
+                                        <td>#{{$user->id}}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->created_at }}</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1"><i
+                                                    class="fa-solid fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-warning me-1"><i
+                                                    class="fa-solid fa-pen"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i
+                                                    class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-                
-                <ul class="activity-list">
-                    <li class="activity-item">
-                        <div class="activity-icon icon-user">
-                            <i class="fas fa-user-plus"></i>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">User Statistics</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-placeholder">
+                                    <div class="text-center">
+                                        <i class="bi bi-pie-chart display-4 text-muted"></i>
+                                        <p class="mt-3">User Role Distribution Chart</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="activity-info">
-                            <h4>New user registered</h4>
-                            <p>John Doe joined the platform - 2 hours ago</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Recent Signups</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Michael Brown</h6>
+                                            <small class="text-muted">michael@example.com</small>
+                                        </div>
+                                        <span class="badge bg-primary">Today</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Sarah Wilson</h6>
+                                            <small class="text-muted">sarah@example.com</small>
+                                        </div>
+                                        <span class="badge bg-primary">Yesterday</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">David Miller</h6>
+                                            <small class="text-muted">david@example.com</small>
+                                        </div>
+                                        <span class="badge bg-primary">2 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    
-                    <li class="activity-item">
-                        <div class="activity-icon icon-course">
-                            <i class="fas fa-book"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Page -->
+            <div id="courses" class="page">
+                <h1 class="h3 mb-4 text-gray-800">Courses Management</h1>
+
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Published Courses</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$sortedCourses['published']->count()}}</div>
+                            </div>
                         </div>
-                        <div class="activity-info">
-                            <h4>New course published</h4>
-                            <p>"Advanced Web Development" added - 5 hours ago</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Draft Courses</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$sortedCourses['unpublished']->count()}}</div>
+                            </div>
                         </div>
-                    </li>
-                    
-                    <li class="activity-item">
-                        <div class="activity-icon icon-review">
-                            <i class="fas fa-star"></i>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Average Rating</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$categorizedReviews['average_rate']}}</div>
+                            </div>
                         </div>
-                        <div class="activity-info">
-                            <h4>New review submitted</h4>
-                            <p>5-star review for "Python Basics" - 1 day ago</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Total Categories</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalCategories}}</div>
+                            </div>
                         </div>
-                    </li>
-                    
-                    <li class="activity-item">
-                        <div class="activity-icon icon-user">
-                            <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">All Courses</h6>
+                        <button class="btn btn-primary btn-sm">
+                            <a href="/courses/create"><i class="bi bi-plus-circle me-1">+</i> Add New Course</a>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Course Title</th>
+                                        <th>Instructor</th>
+                                        <th>Category</th>
+                                        <th>Students</th>
+                                        <th>Rating</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($courses as $course)
+                                    <tr>
+                                        <td>#{{ $course->course_id }}</td>
+                                        <td>{{ $course->name }}</td>
+                                        <td>{{ $course->tutors }}</td>
+                                        <td>{{ $categories->firstWhere('category_id', $course->level)->category_name ?? 'Unknown' }}</td>
+                                        <td>{{ $course->enrolled }}</td>
+                                        <td>
+                                            <i class="bi bi-star-fill text-warning"></i> {{ $course->rate }}
+                                        </td>
+                                        <td><span class="badge bg-success">Published</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1"><i
+                                                    class="fa-regular fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-warning me-1"><a class="color-inherit" href="/courses/{{ $course->course_id }}/edit"><i
+                                                        class="fa-solid fa-pen"></i></a></button>
+                                            <form action="/courses/{{ $course->course_id }}/delete" class="form_edit" method="POST">
+                                                @csrf
+                                                <button class="btn btn-sm btn-outline-danger" type="submit"
+                                                    data-confirm-1="This course will be deleted. Continue?"
+                                                    data-confirm-2="This action is irreversible. Are you absolutely sure?">
+                                                    <i class="fa-solid fa-trash"></i></a>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="activity-info">
-                            <h4>User enrolled in course</h4>
-                            <p>Sarah enrolled in "Data Science 101" - 1 day ago</p>
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Course Categories</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach($categories as $category)
+                            <div class="col-md-3 mb-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">{{ $category->category_name }}</h5>
+                                        <p class="card-text">{{ $category->courses_count }} Courses</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
-                    </li>
-                </ul>
-            </section>
-        </main>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="analytics" class="page">
+                <h1 class="h3 mb-4 text-gray-800">Analytics Dashboard</h1>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">User Growth Overview</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-placeholder">
+                                    <div class="text-center">
+                                        <i class="bi bi-bar-chart display-4 text-muted"></i>
+                                        <p class="mt-3">User Growth Chart</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Top Courses</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Web Development</h6>
+                                            <small class="text-muted">542 students</small>
+                                        </div>
+                                        <span class="badge bg-primary">#1</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Data Science</h6>
+                                            <small class="text-muted">387 students</small>
+                                        </div>
+                                        <span class="badge bg-secondary">#2</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Digital Marketing</h6>
+                                            <small class="text-muted">215 students</small>
+                                        </div>
+                                        <span class="badge bg-secondary">#3</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Graphic Design</h6>
+                                            <small class="text-muted">198 students</small>
+                                        </div>
+                                        <span class="badge bg-secondary">#4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Enrollment Statistics</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-placeholder">
+                                    <div class="text-center">
+                                        <i class="bi bi-pie-chart display-4 text-muted"></i>
+                                        <p class="mt-3">Enrollment Distribution Chart</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Platform Traffic</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <h6>Direct <span class="float-right">40%</span></h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" style="width: 40%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Organic Search <span class="float-right">30%</span></h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Social Media <span class="float-right">20%</span></h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Referral <span class="float-right">10%</span></h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" style="width: 10%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Key Metrics</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 col-6 mb-4">
+                                <div class="border rounded p-3">
+                                    <h3 class="text-primary">32.5%</h3>
+                                    <p class="text-muted">Conversion Rate</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-4">
+                                <div class="border rounded p-3">
+                                    <h3 class="text-success">4.2 min</h3>
+                                    <p class="text-muted">Avg. Session Duration</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-4">
+                                <div class="border rounded p-3">
+                                    <h3 class="text-warning">68%</h3>
+                                    <p class="text-muted">Retention Rate</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-4">
+                                <div class="border rounded p-3">
+                                    <h3 class="text-danger">12.8%</h3>
+                                    <p class="text-muted">Bounce Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="page">
+                <h1 class="h3 mb-4 text-gray-800">Settings</h1>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">General Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Site Name</label>
+                                    <input type="text" class="form-control" value="E-Learning Platform">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Site Description</label>
+                                    <textarea class="form-control"
+                                        rows="3">Online learning platform with various courses</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Site URL</label>
+                                    <input type="text" class="form-control" value="https://example.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Timezone</label>
+                                    <select class="form-select">
+                                        <option selected>UTC-5 (Eastern Time)</option>
+                                        <option>UTC-8 (Pacific Time)</option>
+                                        <option>UTC+0 (GMT)</option>
+                                        <option>UTC+1 (Central European Time)</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">User Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="allowRegistrations" checked>
+                                    <label class="form-check-label" for="allowRegistrations">Allow New
+                                        Registrations</label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailVerification" checked>
+                                    <label class="form-check-label" for="emailVerification">Require Email
+                                        Verification</label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="autoApprove" checked>
+                                    <label class="form-check-label" for="autoApprove">Auto-approve New Users</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Default User Role</label>
+                                    <select class="form-select">
+                                        <option selected>Student</option>
+                                        <option>Instructor</option>
+                                        <option>Content Moderator</option>
+                                        <option>Administrator</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Max Login Attempts</label>
+                                    <input type="number" class="form-control" value="5">
+                                </div>
+                                <button class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Course Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="allowReviews" checked>
+                                    <label class="form-check-label" for="allowReviews">Allow Course Reviews</label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="approveReviews" checked>
+                                    <label class="form-check-label" for="approveReviews">Approve Reviews Before
+                                        Publishing</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Max Course Duration (hours)</label>
+                                    <input type="number" class="form-control" value="50">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Min Course Duration (hours)</label>
+                                    <input type="number" class="form-control" value="2">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Default Commission Rate (%)</label>
+                                    <input type="number" class="form-control" value="20">
+                                </div>
+                                <button class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Notification Settings</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Email Notifications</h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="newUserEmail" checked>
+                                    <label class="form-check-label" for="newUserEmail">New user registration</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="newCourseEmail" checked>
+                                    <label class="form-check-label" for="newCourseEmail">New course submission</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="newReviewEmail">
+                                    <label class="form-check-label" for="newReviewEmail">New course review</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>System Notifications</h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="systemUpdates" checked>
+                                    <label class="form-check-label" for="systemUpdates">System updates</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="maintenanceAlerts" checked>
+                                    <label class="form-check-label" for="maintenanceAlerts">Maintenance alerts</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="securityAlerts" checked>
+                                    <label class="form-check-label" for="securityAlerts">Security alerts</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-primary">Save Notification Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    @else
+    <script>
+        window.location = "/login";
+    </script>
+    @endauth
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Simple page navigation without JavaScript framework
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle sidebar navigation
+            const navLinks = document.querySelectorAll('#sidebar .nav-link');
+            const pages = document.querySelectorAll('.page');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Get the target page
+                    const targetPage = this.getAttribute('data-page');
+
+                    // Remove active class from all pages and links
+                    pages.forEach(page => page.classList.remove('active'));
+                    navLinks.forEach(link => link.classList.remove('active'));
+
+                    // Add active class to current page and link
+                    document.getElementById(targetPage).classList.add('active');
+                    this.classList.add('active');
+
+                    // Close sidebar on mobile after navigation
+                    if (window.innerWidth < 768) {
+                        document.getElementById('sidebar').classList.remove('active');
+                        document.getElementById('content').classList.remove('active');
+                    }
+                });
+            });
+
+            // Handle sidebar toggle for mobile
+            const sidebarToggler = document.querySelector('.sidebar-toggler');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+
+            sidebarToggler.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                content.classList.toggle('active');
+            });
+
+            // Handle dropdowns (Bootstrap handles this, but we need to prevent default on sidebar links)
+            const sidebarDropdowns = document.querySelectorAll('#sidebar .dropdown-toggle');
+            sidebarDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
 </body>
-</html>
+@endsection
