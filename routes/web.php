@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
+
+use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return view('main_page.main');
 });
@@ -31,11 +33,18 @@ Route::get('/products/{:id}', [ProductController::class, 'showSupperProVIP']);
 Route::get('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
 
+
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
+Route::get('/courses/{id}/edit', [CourseController::class, 'edit']);
+Route::post('/courses/{id}/update', [CourseController::class, 'update']);
+Route::post('/courses/{id}/delete', [CourseController::class, 'softDelete']);
+
 
 Route::get('/about', [ComponentController::class, 'getAbout']);
 Route::get('/contact', [ComponentController::class, 'getContact']);
 Route::get('/team', [ComponentController::class, 'getTeam']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
+// Route for admin dashboard
+Route::get('/admin/dashboard',[AdminController::class, 'index']);

@@ -44,7 +44,7 @@
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-layer-group"></i>
-                    <span>Level: <strong>{{ $category_name }}</strong></span>
+                    <span>Object: <strong>{{ $category_name }}</strong></span>
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-signal"></i>
@@ -94,12 +94,12 @@
             <!-- Action Buttons -->
             <div class="row g-3 course-actions">
                 <div class="col-md-6">
-                    <button class="btn btn-enroll rounded-0" onclick="enrollCourse({{ $course->course_id }})">
+                    <button class="btn btn-enroll rounded-0" onclick="enrollCourse({{ $course -> course_id }})">
                         <i class="fas fa-shopping-cart me-2"></i> Enroll Now
                     </button>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-wishlist rounded-0" onclick="addToWishlist({{ $course->course_id }})">
+                    <button class="btn btn-wishlist rounded-0" onclick="addToWishlist({{ $course -> course_id }})">
                         <i class="far fa-heart me-2"></i> Add to Wishlist
                     </button>
                 </div>
