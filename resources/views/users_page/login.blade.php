@@ -43,7 +43,7 @@
                                     <div class="mb-4">
                                         <div class="d-flex justify-content-between">
                                             <label for="password" class="form-label">Password</label>
-                                            <a href="#" class="text-decoration-none small" style="color: var(--primary-color);">Forgot Password?</a>
+                                            <a href="{{ route('forgot.password.update') }}" class="text-decoration-none small" style="color: var(--primary-color);">Forgot Password?</a>
                                         </div>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-lock"></i></span>

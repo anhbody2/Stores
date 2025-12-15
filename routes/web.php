@@ -9,10 +9,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 Route::get('/', function () {
     return view('main_page.main');
 });
-
 
 Route::get('/register', [UserController::class, 'GetUser'])->name('register.form');
 Route::post('/register', [UserController::class, 'register'])->name('register');
@@ -21,7 +22,6 @@ Route::get('/login', [UserController::class, 'GetLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.post');
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
 
 Route::get('/huy', [HuyController::class, 'index']);
 Route::get('/course/{id}', [CourseController::class, 'show']);
@@ -41,8 +41,10 @@ Route::get('/contact', [ComponentController::class, 'getContact']);
 Route::get('/team', [ComponentController::class, 'getTeam']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
 
-Route::middleware('auth')->group(function () {
-    Route::post('/cart/add/{id}', [CartController::class, 'add']);
-    Route::post('/cart/remove/{id}', [CartController::class, 'remove']);
+Route::get('/forgot-password', function () {
+    return view('users_page.forgot-password');
 });
 
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'update'])
+    ->name('forgot.password.update');
