@@ -1,19 +1,20 @@
 @extends('entry')
 @section('content')
 <div class="container">
+
     <!-- New Courses Section -->
     <div class="mb-5">
         <h2 class="section-title">New & Trending Courses</h2>
         <p class="text-muted mb-4">Check out our latest course additions that are trending now.</p>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="new-courses-container">
-            <!-- New courses will be dynamically inserted here -->
         </div>
     </div>
 
     <!-- Filter Section -->
-    <div class="filter-section">
+    <div class="filter-section mb-5">
         <div class="row g-3">
+
             <div class="col-md-6">
                 <label for="categoryFilter" class="form-label">Filter by Category</label>
                 <select class="form-select" id="categoryFilter">
@@ -23,6 +24,7 @@
                     @endforeach
                 </select>
             </div>
+
             <div class="col-md-6">
                 <label for="difficultyFilter" class="form-label">Filter by Difficulty</label>
                 <select class="form-select" id="difficultyFilter">
@@ -32,19 +34,21 @@
                     @endforeach
                 </select>
             </div>
+
             <div class="col-md-8">
                 <label for="searchInput" class="form-label">Search Courses</label>
                 <input type="text" class="form-control" id="searchInput"
                     placeholder="Search by course title, instructor, or keyword">
             </div>
+
             <div class="col-md-4 d-flex align-items-end">
                 <button class="btn btn-outline-primary w-100" id="resetFilters">Reset Filters</button>
             </div>
+
         </div>
     </div>
 
-
-    <!-- Main Course Grid -->
+    <!-- Main Courses Grid -->
     <div class="mb-5">
         <h2 class="section-title">All Courses</h2>
         <p class="text-muted mb-4">Browse our complete course catalog.</p>
@@ -53,7 +57,7 @@
             
         </div>
 
-        <!-- Empty State (hidden by default) -->
+        <!-- Empty State -->
         <div id="empty-state" class="empty-state d-none">
             <i class="bi bi-search display-1 text-muted mb-3"></i>
             <h3>No courses found</h3>
@@ -62,29 +66,32 @@
         </div>
     </div>
 
-    <!-- Categories Section -->
+    <!-- Browse by Category -->
     <div class="mb-5">
         <h2 class="section-title">Browse by Category</h2>
         <p class="text-muted mb-4">Explore courses organized by subject area.</p>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="categories-container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             @foreach($categories as $category)
             <div class="col">
                 <div class="card category-card h-100">
                     <div class="card-body d-flex flex-column">
+
                         <div class="text-center mb-3">
-                            <i class="{{ $category->icon}} category-icon"></i>
+                            <i class="{{ $category->icon }} category-icon"></i>
                         </div>
+
                         <h4 class="card-title text-center">{{ $category->category_name }}</h4>
                         <p class="card-text text-center flex-grow-1">{{ $category->description }}</p>
 
                         <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
+                            <div class="d-flex justify-content-between">
                                 <span class="small">Courses {{ $category->courses_count }}</span>
                                 <span class="small">{{ $category->percentage }}%</span>
                             </div>
+
                             <div class="progress category-progress">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $category->percentage }}%;"
+                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%; background-color: ${category.color};"
                                     aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
@@ -103,25 +110,27 @@
                                 Browse {{ $category->category_name }} Courses
                             </button>
                         </div>
+
+                        <button class="btn btn-outline-primary mt-auto w-100"
+                            onclick="filterByCategory({{ $category->category_id }})">
+                            Browse {{ $category->category_name }} Courses
+                        </button>
+
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+
     </div>
-    <div id="empty-state" class="empty-state d-none">
-        <i class="bi bi-search display-1 text-muted mb-3"></i>
-        <h3>No courses found</h3>
-        <p class="text-muted">Try adjusting your search or filter to find what you're looking for.</p>
-        <button class="btn btn-primary mt-2" id="resetEmpty">Reset All Filters</button>
+
+    <div class="footer text-center mb-4">
+        <p>Course Catalog © 2023. All rights reserved.</p>
+        <p class="small">This page displays simulated course data.</p>
     </div>
-    <!-- Footer -->
-    <div class="footer text-center">
-        <p>Course Catalog &copy; 2023. All rights reserved.</p>
-        <p class="small">This page displays simulated course data. In a real application, this would be populated
-            from your database.</p>
-    </div>
+
 </div>
+
 <script>
     window.courses = @json($coursesJson);
 </script>
