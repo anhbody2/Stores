@@ -3,30 +3,47 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
 
 class CheckoutController extends Controller
 {
-    public function show($course_id)
+    /**
+     * Hiển thị trang thành công sau thanh toán
+     */
+    public function success(Request $request)
     {
-        $course = Course::findOrFail($course_id);
-        return view('checkout', compact('course'));
-    }
-    
-    public function process(Request $request)
-    {
-        $request->validate([
-            'course_id' => 'required|exists:courses,course_id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'card_number' => 'required|string|size:16',
-            'expiry_date' => 'required|string',
-            'cvv' => 'required|string|size:3',
+        $user = Auth::user();
+        
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        // Lấy course_id vừa enroll từ session
+        $enrolledCourseId = $request->session()->get('enrolled_course_id');
+        
+        // Lấy danh sách course_id đã enroll từ enrolled_courses
+        $enrolledCourseIds = json_decode($user->enrolled_courses ?? '[]', true);
+        
+        // Lấy thông tin chi tiết các khóa học từ database
+        $enrolledCourses = [];
+        if (!empty($enrolledCourseIds)) {
+            $enrolledCourses = Course::whereIn('course_id', $enrolledCourseIds)
+                ->orderBy('course_id', 'desc')
+                ->get();
+        }
+        
+        // Lấy khóa học vừa đăng ký (nếu có)
+        $latestCourse = null;
+        if ($enrolledCourseId) {
+            $latestCourse = Course::where('course_id', $enrolledCourseId)->first();
+        }
+
+        return view('checkout.success', [
+            'user' => $user,
+            'enrolledCourses' => $enrolledCourses,
+            'latestCourse' => $latestCourse,
+            'enrolledCount' => count($enrolledCourseIds)
         ]);
-        
-        // Xử lý thanh toán ở đây (giả lập)
-        
-        return redirect()->route('enrollment.success')
-                        ->with('success', 'Enrollment successful! Check your email for course access.');
     }
 }

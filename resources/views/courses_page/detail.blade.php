@@ -94,16 +94,52 @@
             <!-- Action Buttons -->
             <div class="row g-3 course-actions">
                 <div class="col-md-6">
-                    <button class="btn btn-enroll rounded-0" onclick="enrollCourse({{ $course->course_id }})">
-                        <i class="fas fa-shopping-cart me-2"></i> Enroll Now
-                    </button>
+                    @if(!$isEnrolled)
+                        <a href="{{ route('course.checkout', $course->course_id) }}" 
+                           class="btn btn-enroll rounded-0 w-100">
+                            <i class="fas fa-shopping-cart me-2"></i> Enroll Now - ${{ number_format($course->price, 2) }}
+                        </a>
+                    @else
+                        <a href="{{ route('my.courses') }}" 
+                           class="btn btn-success rounded-0 w-100">
+                            <i class="fas fa-play-circle me-2"></i> Continue Learning
+                        </a>
+                    @endif
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-wishlist rounded-0" onclick="addToWishlist({{ $course->course_id }})">
-                        <i class="far fa-heart me-2"></i> Add to Wishlist
-                    </button>
+                    @if(!$isEnrolled)
+                        <!-- Nút Wishlist đã bỏ (vì không có route) -->
+                        <button class="btn btn-wishlist rounded-0 w-100" disabled>
+                            <i class="far fa-heart me-2"></i> Add to Wishlist (Coming Soon)
+                        </button>
+                    @else
+                        <a href="{{ route('my.courses') }}" 
+                           class="btn btn-outline-primary rounded-0 w-100">
+                            <i class="fas fa-book me-2"></i> View My Courses
+                        </a>
+                    @endif
                 </div>
             </div>
+
+            <!-- Status Messages -->
+            @if($isEnrolled)
+            <div class="alert alert-success mt-3">
+                <i class="fas fa-check-circle me-2"></i> You are already enrolled in this course.
+                <a href="{{ route('my.courses') }}" class="btn btn-sm btn-success ms-2">Go to My Courses</a>
+            </div>
+            @endif
+
+            @if(session('info'))
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-info-circle me-2"></i> {{ session('info') }}
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="alert alert-danger mt-3">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+            </div>
+            @endif
         </div>
     </div>
 
@@ -162,15 +198,4 @@
     </div>
 </main>
 
-<script>
-function enrollCourse(courseId) {
-    if(confirm('Are you sure you want to enroll in this course?')) {
-        window.location.href = `/enroll/${courseId}`;
-    }
-}
-
-function addToWishlist(courseId) {
-    alert('Course added to wishlist!');
-}
-</script>
 @endsection

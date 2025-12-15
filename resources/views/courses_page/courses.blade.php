@@ -92,8 +92,15 @@
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <a href="/course/{{ $course->course_id }}" class="btn btn-sm btn-outline-primary">View Details</a>
-                            <button class="btn btn-sm btn-primary">Enroll Now</button>
+                            <a href="/course/{{ $course->course_id }}" class="btn btn-sm btn-outline-primary me-md-2">View Details</a>
+                            
+                            <!-- Enroll Now Form - FIXED -->
+                            <form action="{{ route('course.enroll', $course->course_id) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Enroll Now
+                                </button>
+                            </form>
                         </div>
 
                     </div>
