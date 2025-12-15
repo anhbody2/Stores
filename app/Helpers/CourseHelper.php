@@ -9,4 +9,6 @@ if (! function_exists('getCoursesByCategory')) {
             ->take($limit)
             ->get();
     }
+    
 }
+

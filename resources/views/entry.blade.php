@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- THÊM DÒNG NÀY -->
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -30,6 +31,7 @@
     @vite('resources/css/lib/animate/animate.min.css')
     @vite('resources/css/assets/owl.carousel.min.css')
 
+    @vite('resources/css/admin/admin.css')
 
   
 
@@ -38,8 +40,9 @@
 <body>
 
     {{-- HEADER --}}
+    @if (empty($header))
     @include('partials.header')
-
+    @endif
     {{-- MAIN CONTENT --}}
     @yield('content')
 

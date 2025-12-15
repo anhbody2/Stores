@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
-{
+{   
+    use SoftDeletes;
     public $timestamps = false;
     protected $table = 'courses';
-    
+
     // THÊM DÒNG NÀY
     protected $primaryKey = 'course_id';
-    
+
     // THÊM NÀY NỮA (tùy chọn)
     protected $fillable = [
         'name',
@@ -27,10 +29,14 @@ class Course extends Model
         'tutors',
         'difficulty'
     ];
-    
+
     public function category()
+    {
+        return $this->belongsTo(Category::class, 'level', 'category_id');
+    }
+    public function getLevelNameAttribute(): string
 {
-    return $this->belongsTo(Category::class, 'level', 'category_id');
+    return optional($this->category)->category_name ?? 'Unknown';
 }
 
 }
