@@ -5,12 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HuyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\ResetPasswordController;
+
 Route::get('/', function () {
     return view('main_page.main');
 });
@@ -44,7 +43,6 @@ Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
 Route::get('/forgot-password', function () {
     return view('users_page.forgot-password');
 });
-
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'update'])
     ->name('forgot.password.update');
