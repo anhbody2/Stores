@@ -1,40 +1,55 @@
 <?php
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HuyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
+
 Route::get('/', function () {
     return view('main_page.main');
 });
+
+// Authentication routes
 Route::get('/login', [UserController::class, 'GetLogin']);
-
 Route::post('/login', [UserController::class, 'login']);
-
 Route::get('/register', [UserController::class, 'GetUser']);
-
 Route::post('/register', [UserController::class, 'register']);
-
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+// ========== COURSE ROUTES ==========
+Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
+Route::get('/course/{id}/checkout', [CourseController::class, 'checkout'])->name('course.checkout');
+Route::post('/course/{id}/checkout/process', [CourseController::class, 'processCheckout'])->name('course.checkout.process');
+Route::post('/course/{id}/enroll', [CourseController::class, 'enroll'])->name('course.enroll');
+
+// ========== CHECKOUT ROUTES ==========
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+// ========== PROFILE ROUTES ==========
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user', [ProfileController::class, 'index'])->name('user');
+    Route::get('/profile', [ProfileController::class, 'redirectToUser'])->name('profile');
+    Route::get('/my-courses', [ProfileController::class, 'myCourses'])->name('my.courses');
+});
+
+// ========== EXISTING ROUTES ==========
 Route::get('/huy', [HuyController::class, 'index']);
-Route::get('/course/{id}', [CourseController::class, 'show']);
 Route::get('/san-pham/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);
 Route::get('/products/{:id}', [ProductController::class, 'showSupperProVIP']);
 
-// route for category and course creation and storage
+// Category and course creation
 Route::get('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
-
-Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
 
+// Component routes
 Route::get('/about', [ComponentController::class, 'getAbout']);
 Route::get('/contact', [ComponentController::class, 'getContact']);
 Route::get('/team', [ComponentController::class, 'getTeam']);
