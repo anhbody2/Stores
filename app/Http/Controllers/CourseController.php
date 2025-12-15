@@ -14,11 +14,17 @@ class CourseController extends Controller
 {
     public function index()
     {
+        $totalCourses = Course::count();
         $difficulties = Difficult::all();
         $courses = Course::all();
-        $categories = Category::all();
+        $categories = Category::withCount('courses')->get()->map(function ($category) use ($totalCourses) {
+            $category->percentage = $totalCourses > 0
+                ? round(($category->courses_count / $totalCourses) * 100, 2)
+                : 0;
 
-        $coursesJson = $courses->map(function ($course) use ($categories, $difficulties) {
+            return $category;
+        });
+        $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
             return [
                 'course_id' => $course->course_id,
                 'name' => $course->name,
@@ -31,6 +37,7 @@ class CourseController extends Controller
                 'time_average' => $course->time_average,
                 'price' => $course->price,
                 'enrolled' => $course->enrolled,
+
                 'category' => $course->level,
                 'category_name' => optional(
                     $categories->firstWhere('category_id', $course->level)

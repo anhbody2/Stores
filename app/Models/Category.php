@@ -9,7 +9,7 @@ class   Category extends Model
     protected $table = 'categories';
     public function courses()
 {
-    return $this->hasMany(Course::class, 'level');
+    return $this->hasMany(Course::class, 'level', 'category_id');
 }
 
 }

@@ -1,5 +1,7 @@
 import './bootstrap';
-import './filter';
+import { showToast } from './toast';
+
+window.showToast = showToast;
 // product-detail.js - Xử lý trang chi tiết sản phẩm
 
 document.addEventListener('DOMContentLoaded', function() {

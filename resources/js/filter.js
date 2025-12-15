@@ -31,22 +31,24 @@ function filterCourses() {
         }
 
         if (searchTerm) {
-            const title = (course.title || "").toLowerCase();
-            const instructor = (course.tutors || "").toLowerCase();
-            const description = (course.description || "").toLowerCase();
-
-            const match =
-                title.includes(searchTerm) ||
-                instructor.includes(searchTerm) ||
-                description.includes(searchTerm);
-
-            if (!match) return false;
+            if (!objectSearch(course, searchTerm)) {
+                return false;
+            }
         }
+
+        console.log(" ✅ Match");
         return true;
     });
 
     renderCourses(filteredCourses);
     toggleEmptyState(filteredCourses.length === 0);
+}
+// Generic dynamic search across object fields
+function objectSearch(obj, term) {
+    return Object.values(obj).some(value =>
+        String(value).toLowerCase().includes(term)
+    );
+   
 }
 
 // Render HTML
@@ -60,7 +62,7 @@ function renderCourses(list) {
         emptyState.classList.add('d-none');
         courseContainer.classList.remove('d-none');
     }
-   
+
     list.forEach(course => {
         const courseElement = document.createElement('div');
         courseElement.className = 'col';

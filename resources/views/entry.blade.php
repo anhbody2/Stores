@@ -26,7 +26,7 @@
     @vite('resources/css/auth/reg.css')
     @vite('resources/css/courses/courses.css')
     @vite('resources/css/product/details.css')
-
+    @vite('resources/css/main/toast.css')
     <!-- Animated -->
     @vite('resources/css/lib/animate/animate.min.css')
     @vite('resources/css/assets/owl.carousel.min.css')
@@ -45,19 +45,27 @@
     {{-- FOOTER --}}
     @include('partials.footer')
 
-    
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/wow/wow.min.js') }}"></script>
-    @vite('resources/js/filter.js')
-    @vite('resources/js/easing/easing.min.js')
-    @vite('resources/js/waypoints/waypoints.min.js')
-    @vite('resources/js/owlcarousel/owl.carousel.min.js')
+    @vite([
+    'resources/js/app.js',
 
-    <!-- Template Javascript -->
-    @vite('resources/js/main.js')
-
+    'resources/js/filter.js',
+    'resources/js/easing/easing.min.js',
+    'resources/js/waypoints/waypoints.min.js',
+    'resources/js/owlcarousel/owl.carousel.min.js',
+    'resources/js/main.js'
+    ])
+    @if(session('toastMessage'))
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            showToast("{{ session('toastMessage') }}", "{{ session('toastRedirect') }}");
+        });
+    </script>
+    @endif
 </body>
 
 </html>
