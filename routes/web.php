@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HuyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
@@ -64,6 +70,14 @@ Route::get('/about', [ComponentController::class, 'getAbout']);
 Route::get('/contact', [ComponentController::class, 'getContact']);
 Route::get('/team', [ComponentController::class, 'getTeam']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
+
+Route::get('/forgot-password', function () {
+    return view('users_page.forgot-password');
+});
+
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'update'])
+    ->name('forgot.password.update');
 // Route for admin dashboard
 Route::get('/admin/dashboard',[AdminController::class, 'index']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
