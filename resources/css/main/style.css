@@ -2,8 +2,8 @@
 body {
     font-family: "Montserrat", sans-serif !important;
     font-size: 15px;
-    color: #565656;
-    background: #F0FBFC;
+    color: var(--dark);
+    background: var(--light);
 }
 
 .logo {
@@ -16,11 +16,7 @@ body {
     font-family: serif;
 }
 
-:root {
-    --primary: #565656;
-    --light: #F0FBFC;
-    --dark: #181d38;
-}
+
 
 .fw-medium {
     font-weight: 600 !important;
@@ -103,7 +99,7 @@ body {
 .navbar-light .navbar-nav .nav-link {
     margin-right: 30px;
     padding: 25px 0;
-    color: #FFFFFF;
+    color: var(--light);
     font-size: 15px;
     text-transform: uppercase;
     outline: none;
@@ -113,7 +109,6 @@ body {
 .navbar-light .navbar-nav .nav-link.active {
     color: var(--primary);
 }
-
 @media (max-width: 991.98px) {
     .navbar-light .navbar-nav .nav-link {
         margin-right: 0;
@@ -121,7 +116,7 @@ body {
     }
 
     .navbar-light .navbar-nav {
-        border-top: 1px solid #EEEEEE;
+        border-top: 1px solid var(--light);
     }
 }
 
@@ -199,9 +194,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
+    color: var(--light);
     background: transparent;
-    border: 1px solid #FFFFFF;
+    border: 1px solid var(--light);
     font-size: 22px;
     transition: .5s;
 }
@@ -359,7 +354,7 @@ body {
 }
 
 .testimonial-carousel .owl-item.center .testimonial-text * {
-    color: #FFFFFF !important;
+    color: var(--light) !important;
 }
 
 .testimonial-carousel .owl-dots {
@@ -375,7 +370,7 @@ body {
     margin: 0 5px;
     width: 15px;
     height: 15px;
-    border: 1px solid #CCCCCC;
+    border: 1px solid var(--light);
     transition: .5s;
 }
 
@@ -396,7 +391,7 @@ body {
     justify-content: center;
     color: var(--light);
     font-weight: normal;
-    border: 1px solid #FFFFFF;
+    border: 1px solid var(--light);
     border-radius: 35px;
     transition: .3s;
 
@@ -411,7 +406,7 @@ body {
     margin-bottom: 5px;
     padding: 0;
     text-align: left;
-    color: #FFFFFF;
+    color: var(--light);
     font-size: 15px;
     font-weight: normal;
     text-transform: capitalize;
@@ -444,11 +439,22 @@ body {
 .footer .footer-menu a {
     margin-right: 15px;
     padding-right: 15px;
-    border-right: 1px solid rgba(255, 255, 255, .1);
+    border-right: 1px solid var(--light);
 }
 
 .footer .footer-menu a:last-child {
     margin-right: 0;
     padding-right: 0;
     border-right: none;
+}
+
+
+/*** SweetAlert2 ***/
+.swal2-confirm{
+    background-color: var(--primary) !important;
+
+}
+.swal2-warning{
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
 }

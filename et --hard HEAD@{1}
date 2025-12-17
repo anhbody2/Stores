@@ -1,0 +1,34 @@
+[33mec381a1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32madminpage[m[33m, [m[1;31morigin/adminpage[m[33m)[m HEAD@{0}: pull origin adminpage: Fast-forward
+[33mdf82b45[m HEAD@{1}: commit: adminpage#3
+[33m2498801[m HEAD@{2}: pull origin master: Fast-forward
+[33m8f63807[m HEAD@{3}: reset: moving to HEAD
+[33m8f63807[m HEAD@{4}: pull origin master: Fast-forward
+[33mc55d9d1[m HEAD@{5}: checkout: moving from routecoursespage to adminpage
+[33mbf07ed4[m[33m ([m[1;31morigin/routecoursespage[m[33m, [m[1;32mroutecoursespage[m[33m)[m HEAD@{6}: commit: toast message, update ui coursespage, filter function finish
+[33m6fe0770[m HEAD@{7}: commit: courses page #3
+[33mb36f17b[m HEAD@{8}: pull origin routecoursespage: Fast-forward
+[33m9820824[m HEAD@{9}: commit: execute courses page + add helper
+[33mba9f897[m HEAD@{10}: pull origin master: Fast-forward
+[33m7962859[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{11}: reset: moving to HEAD
+[33m7962859[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{12}: checkout: moving from master to routecoursespage
+[33m7962859[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{13}: commit: coursespage pull#2
+[33mda69624[m HEAD@{14}: checkout: moving from coursespage to master
+[33m74d2721[m[33m ([m[1;31morigin/coursespage[m[33m, [m[1;32mcoursespage[m[33m)[m HEAD@{15}: commit: add course and categories form
+[33m4d93fd7[m[33m ([m[1;31morigin/ui#2[m[33m, [m[1;32mui#2[m[33m)[m HEAD@{16}: checkout: moving from ui#2 to coursespage
+[33m4d93fd7[m[33m ([m[1;31morigin/ui#2[m[33m, [m[1;32mui#2[m[33m)[m HEAD@{17}: commit: Ui mainpage,componentpage,details
+[33mda69624[m HEAD@{18}: checkout: moving from master to ui#2
+[33mda69624[m HEAD@{19}: pull: Fast-forward
+[33mf227b92[m HEAD@{20}: reset: moving to HEAD
+[33mf227b92[m HEAD@{21}: pull: Fast-forward
+[33meda54c4[m HEAD@{22}: pull: Fast-forward
+[33mc55d9d1[m HEAD@{23}: checkout: moving from mainpage to master
+[33m449e0fd[m[33m ([m[1;32mmainpage[m[33m)[m HEAD@{24}: commit: main page UI
+[33mc55d9d1[m HEAD@{25}: checkout: moving from adminpage to mainpage
+[33mc55d9d1[m HEAD@{26}: checkout: moving from master to adminpage
+[33mc55d9d1[m HEAD@{27}: commit: path folder
+[33mf8344f3[m HEAD@{28}: commit (merge): Fix merge conflicts
+[33m55a5433[m HEAD@{29}: commit: hi
+[33mdbd481c[m HEAD@{30}: pull: Fast-forward
+[33m3184e06[m HEAD@{31}: commit: test#1
+[33m3e5bb57[m HEAD@{32}: commit: path folder successfully
+[33m11b567c[m HEAD@{33}: commit (initial): pre-deploy to test run web on github

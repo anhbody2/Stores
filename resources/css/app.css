@@ -1,0 +1,10 @@
+@import './variables.css';
+@import './main/style.css';
+
+/* <!-- Customized Bootstrap Stylesheet --> */
+@import './main/bootstrap.min.css';
+@import './main/toast.css';
+
+/* <!-- Customized Animated Stylesheet --> */
+@import './lib/animate/animate.min.css';
+@import './assets/owl.carousel.min.css';

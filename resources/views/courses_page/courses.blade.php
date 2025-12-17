@@ -1,4 +1,7 @@
 @extends('entry')
+@push('styles')
+    @vite('resources/css/courses/courses.css')
+@endpush
 @section('content')
 <div class="container">
 
@@ -13,7 +16,7 @@
 
     <!-- Filter Section -->
     <div class="filter-section mb-5">
-        <div class="row g-3">
+        <div class="row g-3 bolder">
 
             <div class="col-md-6">
                 <label for="categoryFilter" class="form-label">Filter by Category</label>
@@ -54,7 +57,7 @@
         <p class="text-muted mb-4">Browse our complete course catalog.</p>
 
         <div id="course-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            
+
         </div>
 
         <!-- Empty State -->
@@ -91,8 +94,8 @@
                             </div>
 
                             <div class="progress category-progress">
-                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%; background-color: ${category.color};"
-                                    aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $category->percentage }}%; background-color: {{ $category->color }};"
+                                    aria-valuenow="{{ $category->percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
@@ -104,17 +107,13 @@
                                 @endforeach
                             </ul>
                         </div>
-                            
+
                         <div class="mt-auto">
                             <button class="btn btn-outline-primary w-100" onclick="filterByCategory({{ $category-> category_id }})">
                                 Browse {{ $category->category_name }} Courses
                             </button>
                         </div>
 
-                        <button class="btn btn-outline-primary mt-auto w-100"
-                            onclick="filterByCategory({{ $category->category_id }})">
-                            Browse {{ $category->category_name }} Courses
-                        </button>
 
                     </div>
                 </div>
@@ -122,11 +121,6 @@
             @endforeach
         </div>
 
-    </div>
-
-    <div class="footer text-center mb-4">
-        <p>Course Catalog © 2023. All rights reserved.</p>
-        <p class="small">This page displays simulated course data.</p>
     </div>
 
 </div>

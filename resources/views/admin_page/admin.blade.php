@@ -1,5 +1,8 @@
 @extends('entry')
 @php $header = true; @endphp
+@push('styles')
+    @vite('resources/css/admin/admin.css')
+@endpush
 @section('content')
 
 <body>
@@ -75,7 +78,7 @@
         <nav id="topbar" class="navbar navbar-expand navbar-light bg-white">
             <div class="container-fluid">
                 <button class="sidebar-toggler" type="button">
-                    <i class="bi bi-list"></i>
+                    <i class="fa-solid fa-list"></i>
                 </button>
 
                 <div class="d-none d-md-inline-block ms-auto">
@@ -339,7 +342,18 @@
                                                     class="fa-solid fa-eye"></i></button>
                                             <button class="btn btn-sm btn-outline-warning me-1"><i
                                                     class="fa-solid fa-pen"></i></button>
-                                            <button class="btn btn-sm btn-outline-danger"><i
+                                            <form class="form_edit" method="POST" id="deleted-users">
+                                                @csrf
+
+                                            </form>
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                onclick="confirmDelete({
+                                                        url: '/users/{{ $user->id }}/delete',
+                                                        formId: 'deleted-users',
+                                                        title: 'Delete user?',
+                                                        text: 'This user will be permanently deleted.',
+                                                        confirmText: 'Yes, delete'
+                                                    })" type="button"><i
                                                     class="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -496,14 +510,21 @@
                                                     class="fa-regular fa-eye"></i></button>
                                             <button class="btn btn-sm btn-outline-warning me-1"><a class="color-inherit" href="/courses/{{ $course->course_id }}/edit"><i
                                                         class="fa-solid fa-pen"></i></a></button>
-                                            <form action="/courses/{{ $course->course_id }}/delete" class="form_edit" method="POST">
+                                            <form class="form_edit" method="POST" id="deleted-courses">
                                                 @csrf
-                                                <button class="btn btn-sm btn-outline-danger" type="submit"
-                                                    data-confirm-1="This course will be deleted. Continue?"
-                                                    data-confirm-2="This action is irreversible. Are you absolutely sure?">
-                                                    <i class="fa-solid fa-trash"></i></a>
-                                                </button>
+
                                             </form>
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                onclick="confirmDelete({
+                                                        url: '/courses/{{ $course->course_id }}/delete',
+                                                        formId: 'deleted-courses',
+                                                        title: 'Delete course?',
+                                                        text: 'This course will be permanently deleted.',
+                                                        confirmText: 'Yes, delete'
+                                                    })"
+                                                type="button">
+                                                <i class="fa-solid fa-trash"></i></a>
+                                            </button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -858,10 +879,11 @@
 
                     // Get the target page
                     const targetPage = this.getAttribute('data-page');
-
+                    
                     // Remove active class from all pages and links
                     pages.forEach(page => page.classList.remove('active'));
                     navLinks.forEach(link => link.classList.remove('active'));
+
 
                     // Add active class to current page and link
                     document.getElementById(targetPage).classList.add('active');

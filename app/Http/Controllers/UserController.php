@@ -72,10 +72,13 @@ class UserController extends Controller
 
             User::create($input);
 
-            echo '<script>alert("Đăng ký thành công. Vui lòng đăng nhập.");window.location.assign("login");</script>';
+           return redirect('/login')->with('toastMessage', 'Đăng ký thành công.')
+                ->with('toastRedirect', '/login');
         } catch (\Exception $e) {
             echo "<script>console.log('Register failed: " . $e->getMessage() . "');</script>";
-            echo "<script>alert('Register failed');window.location.assign('register');</script>";
+              return redirect('/register')->with('toastMessage', $e->getMessage())
+                ->with('toastRedirect', '/register');
+            
         }
     }
  

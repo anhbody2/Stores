@@ -1,5 +1,9 @@
 @extends('entry')
+@push('styles')
+    @vite('resources/css/product/details.css')
+@endpush
 @section('content')
+@auth
 <main class="container">
     <!-- Course Details Section -->
     <div class="row mb-5 course-card rounded-0">
@@ -18,14 +22,14 @@
             <div class="d-flex align-items-center mb-4">
                 <span class="price me-3">${{ number_format($course->price, 2) }}</span>
                 @php
-                    $original_price = $course->price * 1.5;
+                $original_price = $course->price * 1.5;
                 @endphp
                 @if($course->price < $original_price)
-                <span class="original-price me-3">${{ number_format($original_price, 2) }}</span>
-                <span class="discount">{{ 
+                    <span class="original-price me-3">${{ number_format($original_price, 2) }}</span>
+                    <span class="discount">{{
                     round((($original_price - $course->price) / $original_price) * 100) 
                 }}% OFF</span>
-                @endif
+                    @endif
             </div>
 
             <!-- Course Meta -->
@@ -61,17 +65,17 @@
             <div class="d-flex align-items-center mb-4">
                 <div class="stars">
                     @php
-                        $rate = $course->rate ?? 0;
+                    $rate = $course->rate ?? 0;
                     @endphp
                     @for($i = 1; $i <= 5; $i++)
-                        @if($i <= floor($rate))
-                            <i class="fas fa-star text-warning"></i>
+                        @if($i <=floor($rate))
+                        <i class="fas fa-star text-warning"></i>
                         @elseif($i == ceil($rate) && $rate - floor($rate) >= 0.5)
-                            <i class="fas fa-star-half-alt text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
                         @else
-                            <i class="far fa-star text-warning"></i>
+                        <i class="far fa-star text-warning"></i>
                         @endif
-                    @endfor
+                        @endfor
                 </div>
                 <span class="ms-2">{{ number_format($rate, 1) }}/5.0</span>
                 <span class="ms-3 text-muted">({{ number_format($course->enrolled) }} students enrolled)</span>
@@ -95,28 +99,28 @@
             <div class="row g-3 course-actions">
                 <div class="col-md-6">
                     @if(!$isEnrolled)
-                        <a href="{{ route('course.checkout', $course->course_id) }}" 
-                           class="btn btn-enroll rounded-0 w-100">
-                            <i class="fas fa-shopping-cart me-2"></i> Enroll Now - ${{ number_format($course->price, 2) }}
-                        </a>
+                    <a href="{{ route('course.checkout', $course->course_id) }}"
+                        class="btn btn-enroll rounded-0 w-100">
+                        <i class="fas fa-shopping-cart me-2"></i> Enroll Now - ${{ number_format($course->price, 2) }}
+                    </a>
                     @else
-                        <a href="{{ route('my.courses') }}" 
-                           class="btn btn-success rounded-0 w-100">
-                            <i class="fas fa-play-circle me-2"></i> Continue Learning
-                        </a>
+                    <a href="{{ route('my.courses') }}"
+                        class="btn btn-success rounded-0 w-100">
+                        <i class="fas fa-play-circle me-2"></i> Continue Learning
+                    </a>
                     @endif
                 </div>
                 <div class="col-md-6">
                     @if(!$isEnrolled)
-                        <!-- Nút Wishlist đã bỏ (vì không có route) -->
-                        <button class="btn btn-wishlist rounded-0 w-100" disabled>
-                            <i class="far fa-heart me-2"></i> Add to Wishlist (Coming Soon)
-                        </button>
+                    <!-- Nút Wishlist đã bỏ (vì không có route) -->
+                    <button class="btn btn-wishlist rounded-0 w-100" disabled>
+                        <i class="far fa-heart me-2"></i> Add to Wishlist (Coming Soon)
+                    </button>
                     @else
-                        <a href="{{ route('my.courses') }}" 
-                           class="btn btn-outline-primary rounded-0 w-100">
-                            <i class="fas fa-book me-2"></i> View My Courses
-                        </a>
+                    <a href="{{ route('my.courses') }}"
+                        class="btn btn-outline-primary rounded-0 w-100">
+                        <i class="fas fa-book me-2"></i> View My Courses
+                    </a>
                     @endif
                 </div>
             </div>
@@ -197,5 +201,9 @@
         </div>
     </div>
 </main>
-
+@else
+<script>
+    window.location = "/login";
+</script>
+@endauth
 @endsection

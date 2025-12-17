@@ -57,153 +57,194 @@ class CourseController extends Controller
             'categories' => $categories
         ]);
     }
+    public function create()
+    {
+        $categories = Category::all();  // for dropdown
+        return view('courses_page.create', compact('categories'));
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'rate' => 'nullable|numeric',
+            'enrolled' => 'nullable|integer',
+            'price' => 'required|numeric',
+            'publish_status' => 'required|boolean',
+            'description' => 'nullable|string',
+            'level' => 'required|integer',
+            'time_average' => 'nullable|integer',
+            'image' => 'nullable',
+        ]);
 
-    public function show($id)
-{
-    $course = Course::where('course_id', $id)->firstOrFail();
+        $course = new Course();
+        $course->name = $request->name;
+        $course->rate = $request->rate;
+        $course->enrolled = $request->enrolled;
+        $course->price = $request->price;
+        $course->publish_status = $request->publish_status;
+        $course->description = $request->description;
+        $course->level = $request->level;
+        $course->time_average = $request->time_average;
 
-    $category = Category::where('category_id', $course->level)->first();
-    $difficulty = Difficult::find($course->difficulty);
+        // Image Upload
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->move(public_path('images/courses'), $imageName);
+            $course->image = 'images/courses/' . $imageName;
+        } else if ($request->input('image')) {
+            $course->image = $request->input('image');
+        }
 
-    // Kiểm tra user đã enroll chưa (từ enrolled_courses)
-    $isEnrolled = false;
+        $course->save();
 
-    if (Auth::check()) {
-        $user = Auth::user();
-        $enrolled = $this->getEnrolledCourseIds($user);
-        $isEnrolled = in_array($course->course_id, $enrolled);
+        return redirect()->back()->with('success', 'Course added successfully!');
     }
 
-    return view('courses_page.detail', [
-        'course' => $course,
-        'category_name' => $category->category_name ?? 'Unknown',
-        'difficulty_name' => $difficulty->name ?? 'Unknown',
-        'isEnrolled' => $isEnrolled,
-    ]);
-}
+    public function show($id)
+    {
+        $course = Course::where('course_id', $id)->firstOrFail();
+
+        $category = Category::where('category_id', $course->level)->first();
+        $difficulty = Difficult::find($course->difficulty);
+
+        // Kiểm tra user đã enroll chưa (từ enrolled_courses)
+        $isEnrolled = false;
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            $enrolled = $this->getEnrolledCourseIds($user);
+            $isEnrolled = in_array($course->course_id, $enrolled);
+        }
+
+        return view('courses_page.detail', [
+            'course' => $course,
+            'category_name' => $category->category_name ?? 'Unknown',
+            'difficulty_name' => $difficulty->name ?? 'Unknown',
+            'isEnrolled' => $isEnrolled,
+        ]);
+    }
 
     /**
      * Hiển thị trang checkout cho 1 khóa học
      */
-   /**
- * Hiển thị trang checkout cho 1 khóa học
- */
-public function checkout($id)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đăng ký khóa học');
-    }
-
-    $user = Auth::user();
-    $course = Course::where('course_id', $id)->firstOrFail();
-
-    // Kiểm tra đã enroll chưa (từ enrolled_courses)
-    $enrolled = $this->getEnrolledCourseIds($user);
-    if (in_array($course->course_id, $enrolled)) {
-        return redirect()->route('course.show', $id)
-            ->with('info', 'Bạn đã đăng ký khóa học này rồi!');
-    }
-
-    return view('checkout.index', [
-        'course' => $course,
-        'user' => $user,
-        'subtotal' => $course->price,
-        'total' => $course->price,
-        'isSingleCourse' => true
-    ]);
-}
     /**
-     * Xử lý thanh toán cho 1 khóa học - CHỈ LƯU COURSE_ID
+     * Hiển thị trang checkout cho 1 khóa học
      */
-   public function processCheckout(Request $request, $id)
-{
-    DB::beginTransaction();
-    
-    try {
+    public function checkout($id)
+    {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để đăng ký khóa học');
         }
 
         $user = Auth::user();
         $course = Course::where('course_id', $id)->firstOrFail();
 
-        // Kiểm tra lại đã enroll chưa (từ enrolled_courses)
+        // Kiểm tra đã enroll chưa (từ enrolled_courses)
         $enrolled = $this->getEnrolledCourseIds($user);
         if (in_array($course->course_id, $enrolled)) {
             return redirect()->route('course.show', $id)
                 ->with('info', 'Bạn đã đăng ký khóa học này rồi!');
         }
 
-        // Validate
-        $request->validate([
-            'payment_method' => 'required|in:direct,bank_transfer,momo',
+        return view('checkout.index', [
+            'course' => $course,
+            'user' => $user,
+            'subtotal' => $course->price,
+            'total' => $course->price,
+            'isSingleCourse' => true
         ]);
-
-        // THÊM COURSE_ID VÀO enrolled_courses
-        $enrolled[] = $course->course_id;
-        
-        // Lưu dạng JSON array đơn giản [1, 2, 3] vào enrolled_courses
-        $user->enrolled_courses = json_encode($enrolled);
-        $user->save();
-
-        // Cập nhật số lượng enrolled của course
-        DB::table('courses')
-            ->where('course_id', $course->course_id)
-            ->increment('enrolled');
-
-        DB::commit();
-
-        Log::info('Enrollment successful: User ' . $user->id . ' enrolled in course ' . $course->course_id);
-
-        // Redirect đến trang success
-        return redirect()->route('checkout.success')
-            ->with('success', 'Đăng ký khóa học thành công!')
-            ->with('enrolled_course_id', $course->course_id);
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Log::error('Checkout error: ' . $e->getMessage());
-        return redirect()->back()
-            ->withInput()
-            ->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
     }
-}
+    /**
+     * Xử lý thanh toán cho 1 khóa học - CHỈ LƯU COURSE_ID
+     */
+    public function processCheckout(Request $request, $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            if (!Auth::check()) {
+                return redirect()->route('login');
+            }
+
+            $user = Auth::user();
+            $course = Course::where('course_id', $id)->firstOrFail();
+
+            // Kiểm tra lại đã enroll chưa (từ enrolled_courses)
+            $enrolled = $this->getEnrolledCourseIds($user);
+            if (in_array($course->course_id, $enrolled)) {
+                return redirect()->route('course.show', $id)
+                    ->with('info', 'Bạn đã đăng ký khóa học này rồi!');
+            }
+
+            // Validate
+            $request->validate([
+                'payment_method' => 'required|in:direct,bank_transfer,momo',
+            ]);
+
+            // THÊM COURSE_ID VÀO enrolled_courses
+            $enrolled[] = $course->course_id;
+
+            // Lưu dạng JSON array đơn giản [1, 2, 3] vào enrolled_courses
+            $user->enrolled_courses = json_encode($enrolled);
+            $user->save();
+
+            // Cập nhật số lượng enrolled của course
+            DB::table('courses')
+                ->where('course_id', $course->course_id)
+                ->increment('enrolled');
+
+            DB::commit();
+
+            Log::info('Enrollment successful: User ' . $user->id . ' enrolled in course ' . $course->course_id);
+
+            // Redirect đến trang success
+            return redirect()->route('checkout.success')
+                ->with('success', 'Đăng ký khóa học thành công!')
+                ->with('enrolled_course_id', $course->course_id);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Checkout error: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Lấy danh sách course_id đã enroll từ remember_token
      */
-   /**
- * Lấy danh sách course_id đã enroll từ enrolled_courses
- */
-private function getEnrolledCourseIds($user)
-{
-    // ĐỌC TỪ enrolled_courses thay vì remember_token
-    $enrolledCourses = $user->enrolled_courses;
-    
-    if (empty($enrolledCourses)) {
+    /**
+     * Lấy danh sách course_id đã enroll từ enrolled_courses
+     */
+    private function getEnrolledCourseIds($user)
+    {
+        // ĐỌC TỪ enrolled_courses thay vì remember_token
+        $enrolledCourses = $user->enrolled_courses;
+
+        if (empty($enrolledCourses)) {
+            return [];
+        }
+
+        // Nếu enrolled_courses là mảng JSON [1, 2, 3]
+        $decoded = json_decode($enrolledCourses, true);
+
+        if (is_array($decoded) && !empty($decoded)) {
+            // Kiểm tra phần tử đầu tiên: nếu là số => mảng course_id
+            if (isset($decoded[0]) && is_numeric($decoded[0])) {
+                return $decoded;
+            }
+            // Nếu là mảng kết hợp (kiểu cũ) => trích xuất course_id
+            $courseIds = [];
+            foreach ($decoded as $item) {
+                if (isset($item['course_id']) && is_numeric($item['course_id'])) {
+                    $courseIds[] = $item['course_id'];
+                }
+            }
+            return $courseIds;
+        }
+
         return [];
     }
-    
-    // Nếu enrolled_courses là mảng JSON [1, 2, 3]
-    $decoded = json_decode($enrolledCourses, true);
-    
-    if (is_array($decoded) && !empty($decoded)) {
-        // Kiểm tra phần tử đầu tiên: nếu là số => mảng course_id
-        if (isset($decoded[0]) && is_numeric($decoded[0])) {
-            return $decoded;
-        }
-        // Nếu là mảng kết hợp (kiểu cũ) => trích xuất course_id
-        $courseIds = [];
-        foreach ($decoded as $item) {
-            if (isset($item['course_id']) && is_numeric($item['course_id'])) {
-                $courseIds[] = $item['course_id'];
-            }
-        }
-        return $courseIds;
-    }
-    
-    return [];
-}
 
     /**
      * Phương thức enroll cũ (redirect đến checkout)

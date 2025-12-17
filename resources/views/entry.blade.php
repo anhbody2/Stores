@@ -18,20 +18,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css'])
+    @stack('styles')
 
-    @vite('resources/css/main/style.css')
-    <!-- Customized Bootstrap Stylesheet -->
-    @vite('resources/css/main/bootstrap.min.css')
-    @vite('resources/css/auth/login.css')
-    @vite('resources/css/auth/reg.css')
-    @vite('resources/css/courses/courses.css')
-    @vite('resources/css/product/details.css')
-    @vite('resources/css/main/toast.css')
-    <!-- Animated -->
-    @vite('resources/css/lib/animate/animate.min.css')
-    @vite('resources/css/assets/owl.carousel.min.css')
 
-    @vite('resources/css/admin/admin.css')
 
 </head>
 
@@ -49,18 +39,21 @@
 
 
     <!-- JavaScript Libraries -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/wow/wow.min.js') }}"></script>
     @vite([
     'resources/js/app.js',
-
+    'resources/js/confirm.js',
     'resources/js/filter.js',
     'resources/js/easing/easing.min.js',
     'resources/js/waypoints/waypoints.min.js',
     'resources/js/owlcarousel/owl.carousel.min.js',
     'resources/js/main.js'
     ])
+
     @if(session('toastMessage'))
     <script>
         window.addEventListener('DOMContentLoaded', () => {

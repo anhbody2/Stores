@@ -11,7 +11,7 @@
                 <a href="/about" class="nav-item nav-link">About</a>
                 <a href="/courses" class="nav-item nav-link">Courses</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About Us</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Discover</a>
                     <div class="dropdown-menu fade-down m-0">
                         <a href="/team" class="dropdown-item">Our Team</a>
                         <a href="/testimonial" class="dropdown-item">Testimonial</a>

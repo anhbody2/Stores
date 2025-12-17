@@ -1,5 +1,9 @@
 @extends('entry')
+@push('styles')
+   
+@endpush
 @section('content')
+
 <body>
 
     <!-- Carousel Start -->
@@ -233,14 +237,14 @@
                             </div>
                             <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="course-item bg-light">
                         <div class="position-relative overflow-hidden">
-                           <a href=""><img class="img-fluid" src="{{ asset('images/img/course-2.jpg') }}" alt=""></a>
-                        
+                            <a href=""><img class="img-fluid" src="{{ asset('images/img/course-2.jpg') }}" alt=""></a>
+
                         </div>
                         <div class="text-center p-4 pb-0 border-bottom">
                             <h3 class="mb-0">$149.00</h3>
@@ -254,14 +258,14 @@
                             </div>
                             <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="course-item bg-light">
                         <div class="position-relative overflow-hidden">
                             <a href=""><img class="img-fluid" src="{{ asset('images/img/course-3.jpg') }}" alt=""></a>
-                            
+
                         </div>
                         <div class="text-center p-4 pb-0 border-bottom">
                             <h3 class="mb-0">$149.00</h3>
@@ -275,7 +279,7 @@
                             </div>
                             <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
