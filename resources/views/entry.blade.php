@@ -22,6 +22,10 @@
     @stack('styles')
 
 
+<<<<<<< Updated upstream
+=======
+    @vite('resources/css/admin/admin.css')
+>>>>>>> Stashed changes
 
 </head>
 

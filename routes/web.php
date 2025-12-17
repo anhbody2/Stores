@@ -1,16 +1,21 @@
 <?php
 
+
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HuyController;
-use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ProfileController;
+
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\ProfileController;
+
 
 Route::get('/', function () {
     return view('main_page.main');
@@ -46,9 +51,7 @@ Route::get('/huy', [HuyController::class, 'index']);
 Route::get('/san-pham/supper-pro-vip', [ProductController::class, 'showSupperProVIP']);
 Route::get('/products/{:id}', [ProductController::class, 'showSupperProVIP']);
 
-// Category and course creation
-Route::get('/categories/create', [CategoryController::class, 'create']);
-Route::post('/categories/store', [CategoryController::class, 'store']);
+
 
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
