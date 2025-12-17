@@ -35,6 +35,7 @@ Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('c
 
 // ========== PROFILE ROUTES ==========
 Route::middleware(['auth'])->group(function () {
+    Route::get('/course/{id}/learn', [CourseController::class, 'learn'])->name('course.learn');
     Route::get('/user', [ProfileController::class, 'index'])->name('user');
     Route::get('/profile', [ProfileController::class, 'redirectToUser'])->name('profile');
     Route::get('/my-courses', [ProfileController::class, 'myCourses'])->name('my.courses');
@@ -50,7 +51,7 @@ Route::get('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
 
 
-Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
 Route::get('/courses/{id}/edit', [CourseController::class, 'edit']);
