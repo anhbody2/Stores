@@ -51,7 +51,9 @@
     'resources/js/easing/easing.min.js',
     'resources/js/waypoints/waypoints.min.js',
     'resources/js/owlcarousel/owl.carousel.min.js',
-    'resources/js/main.js'
+    'resources/js/main.js',
+    'resources/js/cursoreffect.js',
+    'resources/js/3d.js'
     ])
 
     @if(session('toastMessage'))

@@ -12,9 +12,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('main_page.main');
-});
+Route::get('/', [ComponentController::class, 'getMain']);
 
 // Authentication routes
 Route::get('/register', [UserController::class, 'GetUser'])->name('register');
@@ -23,7 +21,7 @@ Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::get('/login', [UserController::class, 'GetLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.post');
 
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 // ========== COURSE ROUTES ==========
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');

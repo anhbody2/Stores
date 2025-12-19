@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-4 text-end">
             <a href="{{ route('courses.index') }}" class="btn btn-outline-primary">
-                <i class="fas fa-plus me-2"></i>Add More Courses
+                <i class="fas fa-plus me-2"></i>Learn New Skills?
             </a>
         </div>
     </div>
@@ -34,21 +34,19 @@
             <div class="card mb-4">
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
-                        <a href="{{ route('user') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('user') }}" class="list-group-item list-group-item-action py-3">
                             <i class="fas fa-user me-2"></i> Profile
                         </a>
-                        <a href="{{ route('my.courses') }}" class="list-group-item list-group-item-action active">
-                            <i class="fas fa-book me-2"></i> My Courses
+                        <a href="{{ route('my.courses') }}" class="list-group-item list-group-item-action active py-3">
+                            <i class="fas fa-book me-2 py-3"></i> My Courses
                             @if($totalCourses > 0)
-                            <span class="badge bg-primary float-end">{{ $totalCourses }}</span>
+                            <span class="badge bg-primary float-end py-3 px-3">{{ $totalCourses }}</span>
                             @endif
                         </a>
-                        <a href="{{ route('courses.index') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('courses.index') }}" class="list-group-item list-group-item-action py-3">
                             <i class="fas fa-search me-2"></i> Browse Courses
                         </a>
-                        <a href="/logout" class="list-group-item list-group-item-action text-danger">
-                            <i class="fas fa-sign-out-alt me-2"></i> Logout
-                        </a>
+                        @include('partials.pagination')
                     </div>
                 </div>
             </div>

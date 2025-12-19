@@ -1,12 +1,5 @@
 :root {
-    --primary-color: #4e73df;
-    --secondary-color: #858796;
-    --success-color: #1cc88a;
-    --warning-color: #f6c23e;
-    --danger-color: #e74a3b;
-    --info-color: #36b9cc;
-    --light-color: #f8f9fc;
-    --dark-color: #5a5c69;
+
     --sidebar-width: 250px;
 }
 
@@ -19,15 +12,18 @@ body {
 /* Sidebar Styling */
 #sidebar {
     width: var(--sidebar-width);
-    min-height: 100vh;
-    background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
-    color: white;
+    min-height: fit-content;
+    background: var(--primary);
+    color: var(--bs-white);
     position: fixed;
     top: 0;
     left: 0;
     transition: all 0.3s;
     z-index: 1000;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+.logo-color{
+    color: var(--bs-white);
 }
 
 .sidebar-brand {
@@ -202,7 +198,7 @@ body {
     display: none;
     border: none;
     background: transparent;
-    color: var(--dark-color);
+    color: var(--gray);
     font-size: 1.5rem;
 }
 .color-inherit {

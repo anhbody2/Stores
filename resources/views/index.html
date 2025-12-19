@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/main/card.css">
+</head>
+<style>
+    #container3D {
+        background-color: transparent;
+        pointer-events: none;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        height: 1000rem;
+        overflow-x: hidden;
+        background-color: #D2D2D2;
+        background-image:
+            repeating-linear-gradient(to right, transparent 0 100px,
+                #25283b22 100px 101px),
+            repeating-linear-gradient(to bottom, transparent 0 100px,
+                #25283b22 100px 101px);
+        
+    }
+
+
+    #banner {
+        top: 0;
+        left: 0;
+
+        pointer-events: none;
+        /* do not block mouse interaction */
+        will-change: transform;
+        /* performance hint */
+        width: 100%;
+        height: 100vh;
+    }
+
+    .content {
+        height: 1000px;
+        position: relative;
+    }
+
+    h1 {
+        font-size: 400px;
+        text-transform: capitalize;
+    }
+
+    span {
+        color: transparent;
+        -webkit-text-stroke: 4px white;
+    }
+
+    .text {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1000;
+    }
+
+    .fonts-medium {
+        font-size: 50px;
+        padding-inline: 72px;
+        text-align: center;
+    }
+
+    .cursor {
+        pointer-events: none;
+        position: fixed;
+        display: block;
+        border-radius: 0;
+        mix-blend-mode: difference;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+    }
+
+    .circle {
+        position: absolute;
+        display: block;
+        width: 26px;
+        height: 26px;
+        border-radius: 20px;
+        background-color: #fff;
+    }
+</style>
+
+<body>
+    <div class="cursor">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <h1>the <span>way</span> you <span>learn</span> show <span>how</span> your brain <span>interact</span>.</h1>
+    <div class="content">
+        <section class="banner" id="banner">
+            <div class="slider" style="--quantity: 10">
+                <div class="item" style="--position: 1"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 2"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 3"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 4"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 5"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 6"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 7"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 8"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 9"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+                <div class="item" style="--position: 10"><img
+                        src="https://i.pinimg.com/1200x/1a/0f/85/1a0f853a5675115587ee831021ad0c07.jpg" alt=""></div>
+            </div>
+
+            <div id="container3D">
+
+            </div>
+
+
+        </section>
+
+
+        <h1 class="text"> we <span>help you</span> out</h1>
+    </div>
+    <p class="fonts-medium">We have a <span>team support</span> full day, with <span>big heart</span> and experience, and had a lot of
+        <span>colaboration</span> with the most <span>community</span> about the niches.</p>
+    
+</body>
+<script type="module" src="cursoreffect.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.129.0/build/three.module.js"
+  }
+}
+</script>
+<!-- <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.129.0/build/three.module.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.129.0/examples/jsm/loaders/GLTFLoader.js';
+    import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js';
+
+    /* ------------------ Scene Setup ------------------ */
+
+    const scene = new THREE.Scene();
+    const bannerEl = document.getElementById('banner');
+
+    const { width, height } = getBannerSize();
+
+    const camera = new THREE.PerspectiveCamera(
+        35,
+        width / height,
+        0.01,
+        100
+    );
+    function getBannerSize() {
+        return {
+            width: bannerEl.clientWidth,
+            height: bannerEl.clientHeight
+        };
+    }
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    document.getElementById('container3D').appendChild(renderer.domElement);
+
+    /* ------------------ Lights ------------------ */
+    const ambientLight = new THREE.AmbientLight(0xffffff, .5);
+    scene.add(ambientLight);
+
+    const topLight = new THREE.DirectionalLight(0xffffff, 1);
+    topLight.position.set(500, 500, 500);
+    scene.add(topLight);
+
+    /* ------------------ Model & Animation ------------------ */
+    const followerEl = document.getElementById('banner');
+    const screenPosition = new THREE.Vector3();
+
+    let hand, handMirror;
+    let mixer;
+    const clock = new THREE.Clock();
+
+    const loader = new GLTFLoader();
+    loader.load(
+        'robotic_hand.glb',
+        (gltf) => {
+            hand = gltf.scene;
+            const handGroup = new THREE.Group();
+            scene.add(handGroup);
+            handGroup.add(hand);
+            const box = new THREE.Box3().setFromObject(hand);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+            hand.position.sub(center);
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = THREE.MathUtils.degToRad(camera.fov);
+            let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+
+            cameraZ *= 1;
+            camera.position.set(0, 0, cameraZ);
+            camera.lookAt(0, 0, 0);
+
+            camera.near = cameraZ / 100;
+            camera.far = cameraZ * 100;
+            camera.updateProjectionMatrix();
+
+
+            hand.rotation.set(
+
+                THREE.MathUtils.degToRad(25),                  // X axis
+                Math.PI / 2,         // Y axis (90°)
+                0                   // Z axis
+            );
+
+            hand.scale.set(0.6, 0.6, 0.6); // start smaller
+
+            appear(hand);
+
+
+
+
+            if (gltf.animations && gltf.animations.length) {
+                mixer = new THREE.AnimationMixer(hand);
+                mixer.clipAction(gltf.animations[0]).play();
+            }
+
+        },
+        undefined,
+        (error) => console.error(error)
+    );
+
+    /* ------------------ Render Loop ------------------ */
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    scene.add(light);
+    // function updateFollower(model) {
+    //     if (!model) return;
+
+    //     // get world position of the hand
+    //     model.getWorldPosition(screenPosition);
+
+    //     // project to normalized device coords
+    //     screenPosition.project(camera);
+
+    //     // convert to screen coords
+    //     const x = (screenPosition.x * 0.5 + 0.1) * window.innerWidth;
+    //     const y = (-screenPosition.y * 0.4 + 0.7) * window.innerHeight;
+
+    //     followerEl.style.transform = `translate(${x}px, ${y}px)`;
+    // }
+    function updateFollower(model) {
+        if (!model) return;
+
+        const rect = bannerEl.getBoundingClientRect();
+
+        model.getWorldPosition(screenPosition);
+        screenPosition.project(camera);
+
+        const x = (screenPosition.x * 0.5 + 0.1) * rect.width;
+        const y = (-screenPosition.y * 0.4 + 0.7) * rect.height;
+
+        followerEl.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (hand) {
+            updateFollower(hand);
+        }
+        const intensity = light.intensity;
+        hand.traverse((child) => {
+            if (child.isMesh) {
+                child.material.color.lerpColors(
+                    new THREE.Color(0x222222),
+                    new THREE.Color(0xffffff),
+                    intensity / 2
+
+                );
+            }
+        });
+
+        if (mixer) mixer.update(clock.getDelta());
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    /* ------------------ Interaction ------------------ */
+
+    function disappear(model) {
+        const tl = gsap.timeline({
+            onComplete: () => {
+                model.visible = false; // truly gone
+            }
+        });
+
+        // fade out
+        model.traverse((child) => {
+            if (child.isMesh) {
+                tl.to(child.material, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.in"
+                }, 0);
+            }
+        });
+
+        // zoom out (scale down)
+        tl.to(model.scale, {
+            x: 0.01,
+            y: 0.01,
+            z: 0.01,
+            duration: 0.6,
+            ease: "power2.in"
+        }, 0);
+    }
+
+
+    function appear(model) {
+        model.visible = true;
+
+
+        model.traverse((child) => {
+            if (child.isMesh) {
+                child.material.opacity = 1;
+            }
+        });
+
+        const tl = gsap.timeline();
+
+        tl.to(model.scale, {
+            x: 1,
+            y: 1,
+            z: 1,
+            duration: 10,
+            ease: "power3.out"
+        });
+
+        model.traverse((child) => {
+            if (child.isMesh) {
+                tl.to(child.material, {
+                    opacity: 1,
+                    duration: 10
+                }, 0);
+            }
+        });
+        gsap.to(hand.position, {
+            x: "+=0.3",
+            z: "+=4.2",
+            duration: 20,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1
+        });
+
+        gsap.to(hand.rotation, {
+            y: "+=0.01",
+            duration: 2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1
+        });
+
+    }
+    function mirrorHand(model) {
+        // mirror on X axis
+        model.scale.x *= -1;
+
+        // move it to the side so it doesn't overlap
+        model.position.x += 3;
+
+    }
+
+    /* ------------------ Resize ------------------ */
+
+    window.addEventListener('resize', () => {
+        const { width, height } = getBannerSize();
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+    });
+
+</script> -->
+
+</html>

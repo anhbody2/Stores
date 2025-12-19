@@ -8,3 +8,5 @@
 /* <!-- Customized Animated Stylesheet --> */
 @import './lib/animate/animate.min.css';
 @import './assets/owl.carousel.min.css';
+
+@import 'animate.css';

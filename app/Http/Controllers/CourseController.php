@@ -9,6 +9,8 @@ use App\Models\Difficult;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\Comments;
+use App\Models\User;
 
 class CourseController extends Controller
 {
@@ -24,6 +26,7 @@ class CourseController extends Controller
 
             return $category;
         });
+        $recentCourses = Course::orderBy('created_at', 'desc')->take(3)->get();
         $coursesJson = Course::all()->map(function ($course) use ($categories, $difficulties) {
             return [
                 'id' => $course->course_id,
@@ -49,8 +52,13 @@ class CourseController extends Controller
                 )->name ?? 'Unknown'
             ];
         });
+        $users = User::all();
+        $comments = Comments::all();
 
         return view('courses_page.courses', [
+            'users' => $users,
+            'comments' => $comments,
+            'recentCourses' => $recentCourses,
             'difficulties' => $difficulties,
             'courses' => $courses,
             'coursesJson' => $coursesJson,
@@ -298,7 +306,7 @@ class CourseController extends Controller
 
         $course->save();
 
-        return redirect()->back()->with('success', 'Course added successfully!');
+        return redirect('/admin/dashboard')->with('success', 'Course added successfully!');
     }
     public function softDelete($id)
     {
