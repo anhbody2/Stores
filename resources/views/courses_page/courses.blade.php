@@ -91,8 +91,8 @@
                             </div>
 
                             <div class="progress category-progress">
-                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%; background-color: ${category.color};"
-                                    aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $category->percentage }}%; background-color: {{$category->color}};"
+                                    aria-valuenow="{{ $category->percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
@@ -111,11 +111,7 @@
                             </button>
                         </div>
 
-                        <button class="btn btn-outline-primary mt-auto w-100"
-                            onclick="filterByCategory({{ $category->category_id }})">
-                            Browse {{ $category->category_name }} Courses
-                        </button>
-
+             
                     </div>
                 </div>
             </div>
