@@ -79,6 +79,7 @@ class CourseController extends Controller
             'price' => 'required|numeric',
             'publish_status' => 'required|boolean',
             'description' => 'nullable|string',
+            'tutor' => 'string|nullable',
             'level' => 'required|integer',
             'time_average' => 'nullable|integer',
             'image' => 'nullable',
@@ -91,6 +92,7 @@ class CourseController extends Controller
         $course->price = $request->price;
         $course->publish_status = $request->publish_status;
         $course->description = $request->description;
+        $course->tutors = $request->tutor;
         $course->level = $request->level;
         $course->time_average = $request->time_average;
 

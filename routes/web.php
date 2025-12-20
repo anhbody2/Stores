@@ -60,8 +60,11 @@ Route::post('/courses/{id}/delete', [CourseController::class, 'softDelete'])->na
 // Component routes
 Route::get('/about', [ComponentController::class, 'getAbout']);
 Route::get('/contact', [ComponentController::class, 'getContact']);
+Route::post('/contact', [ComponentController::class, 'store'])->name('comments.store');
+
 Route::get('/team', [ComponentController::class, 'getTeam']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
 // Route for admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'index']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
+Route::get('/error', [ComponentController::class, 'getError']);

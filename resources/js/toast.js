@@ -12,6 +12,6 @@ export function showToast(message, redirectUrl = null) {
         setTimeout(() => {
             toast.remove();
             if (redirectUrl) window.location.href = redirectUrl;
-        }, 300);
+        }, 5000);
     }, 2000);
 }
