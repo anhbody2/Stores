@@ -77,7 +77,7 @@ function renderCourses(list) {
                         <span class="d-none">
                             ${course.category}
                         </span>
-                        <span class="badge bg-secondary course-category">
+                        <span class="badge bg-primary course-category">
                             ${course.category_name}
                         </span>
 

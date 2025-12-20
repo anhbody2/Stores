@@ -1,18 +1,19 @@
 @extends('entry')
 @php $header = true; @endphp
 @push('styles')
-    @vite('resources/css/admin/admin.css')
+@vite('resources/css/admin/admin.css')
 @endpush
 @section('content')
 
 <body>
     @auth
 
+
     <!-- Sidebar -->
     <nav id="sidebar">
-        <a class="sidebar-brand" href="#">
+        <a class="sidebar-brand wrapper" href="/">
             <i class="bi bi-speedometer2"></i>
-            <span>Admin Panel</span>
+            <span class="logo-color">ICOURS</span>
         </a>
 
         <div class="sidebar-heading">Main</div>
@@ -74,6 +75,7 @@
 
     <!-- Main Content -->
     <div id="content">
+
         <!-- Topbar -->
         <nav id="topbar" class="navbar navbar-expand navbar-light bg-white">
             <div class="container-fluid">
@@ -312,8 +314,8 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                         <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
-                        <button class="btn btn-primary btn-sm">
-                            <i class="bi bi-plus-circle me-1"></i> Add New User
+                        <button class="btn btn-primary btn-sm py-3 px-3">
+                            <i class="bi bi-plus-circle me-1">+</i> Add New
                         </button>
                     </div>
                     <div class="card-body">
@@ -474,9 +476,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                         <h6 class="m-0 font-weight-bold text-primary">All Courses</h6>
-                        <button class="btn btn-primary btn-sm">
-                            <a href="/courses/create"><i class="bi bi-plus-circle me-1">+</i> Add New Course</a>
-                        </button>
+                        <a class="btn btn-primary btn-sm py-3 px-3 " href="/courses/create"><i class="bi bi-plus-circle me-1">+</i> Add New </a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -506,10 +506,10 @@
                                         </td>
                                         <td><span class="badge bg-success">Published</span></td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1"><i
-                                                    class="fa-regular fa-eye"></i></button>
-                                            <button class="btn btn-sm btn-outline-warning me-1"><a class="color-inherit" href="/courses/{{ $course->course_id }}/edit"><i
-                                                        class="fa-solid fa-pen"></i></a></button>
+                                            <a class="btn btn-sm btn-outline-primary me-1" href="/course/{{$course->course_id }}"><i
+                                                    class="fa-regular fa-eye"></i></a>
+                                            <a class="btn btn-sm btn-outline-warning me-1" href="/courses/{{ $course->course_id }}/edit"><i
+                                                        class="fa-solid fa-pen"></i></a>
                                             <form class="form_edit" method="POST" id="deleted-courses">
                                                 @csrf
 
@@ -867,37 +867,62 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Simple page navigation without JavaScript framework
+        // Simple page navigation with state persistence
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle sidebar navigation
+
             const navLinks = document.querySelectorAll('#sidebar .nav-link');
             const pages = document.querySelectorAll('.page');
+            const STORAGE_KEY = 'active_page';
 
+            function activatePage(pageId) {
+                // Remove active class from all pages and links
+                pages.forEach(page => page.classList.remove('active'));
+                navLinks.forEach(link => link.classList.remove('active'));
+
+                const targetPage = document.getElementById(pageId);
+                const targetLink = document.querySelector(
+                    `#sidebar .nav-link[data-page="${pageId}"]`
+                );
+
+                if (targetPage && targetLink) {
+                    targetPage.classList.add('active');
+                    targetLink.classList.add('active');
+                }
+            }
+
+            // Restore last active page
+            const savedPage = localStorage.getItem(STORAGE_KEY);
+            if (savedPage) {
+                activatePage(savedPage);
+            } else if (pages.length > 0) {
+                // Default to first page if nothing saved
+                const defaultPage = pages[0].id;
+                activatePage(defaultPage);
+                localStorage.setItem(STORAGE_KEY, defaultPage);
+            }
+
+            // Handle sidebar navigation
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    // Get the target page
                     const targetPage = this.getAttribute('data-page');
-                    
-                    // Remove active class from all pages and links
-                    pages.forEach(page => page.classList.remove('active'));
-                    navLinks.forEach(link => link.classList.remove('active'));
+                    if (!targetPage) return;
 
+                    activatePage(targetPage);
 
-                    // Add active class to current page and link
-                    document.getElementById(targetPage).classList.add('active');
-                    this.classList.add('active');
+                    // Persist selected page
+                    localStorage.setItem(STORAGE_KEY, targetPage);
 
-                    // Close sidebar on mobile after navigation
+                    // Close sidebar on mobile
                     if (window.innerWidth < 768) {
-                        document.getElementById('sidebar').classList.remove('active');
-                        document.getElementById('content').classList.remove('active');
+                        sidebar.classList.remove('active');
+                        content.classList.remove('active');
                     }
                 });
             });
 
-            // Handle sidebar toggle for mobile
+            // Sidebar toggle for mobile
             const sidebarToggler = document.querySelector('.sidebar-toggler');
             const sidebar = document.getElementById('sidebar');
             const content = document.getElementById('content');
@@ -907,7 +932,7 @@
                 content.classList.toggle('active');
             });
 
-            // Handle dropdowns (Bootstrap handles this, but we need to prevent default on sidebar links)
+            // Prevent dropdown navigation
             const sidebarDropdowns = document.querySelectorAll('#sidebar .dropdown-toggle');
             sidebarDropdowns.forEach(dropdown => {
                 dropdown.addEventListener('click', function(e) {

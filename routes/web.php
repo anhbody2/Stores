@@ -17,9 +17,7 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\AdminController;
 
 
-Route::get('/', function () {
-    return view('main_page.main');
-});
+Route::get('/', [ComponentController::class, 'getMain']);
 
 // Authentication routes
 Route::get('/register', [UserController::class, 'GetUser'])->name('register');
@@ -28,7 +26,7 @@ Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::get('/login', [UserController::class, 'GetLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.post');
 
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 // ========== COURSE ROUTES ==========
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
@@ -41,6 +39,7 @@ Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('c
 
 // ========== PROFILE ROUTES ==========
 Route::middleware(['auth'])->group(function () {
+    Route::get('/course/{id}/learn', [CourseController::class, 'learn'])->name('course.learn');
     Route::get('/user', [ProfileController::class, 'index'])->name('user');
     Route::get('/profile', [ProfileController::class, 'redirectToUser'])->name('profile');
     Route::get('/my-courses', [ProfileController::class, 'myCourses'])->name('my.courses');

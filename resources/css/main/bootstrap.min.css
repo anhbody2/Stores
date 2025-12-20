@@ -3784,7 +3784,6 @@ fieldset:disabled .btn {
 .btn-group-sm>.btn {
     padding: .25rem .5rem;
     font-size: .875rem;
-    border-radius: .2rem
 }
 
 .fade {
@@ -5146,8 +5145,8 @@ fieldset:disabled .btn {
 .page-link {
     position: relative;
     display: block;
-    color: #06BBCC;
-    background-color: #fff;
+    color: var(--light);
+    background-color: var(--primary);
     border: 1px solid #dee2e6;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
 }
@@ -5160,17 +5159,17 @@ fieldset:disabled .btn {
 
 .page-link:hover {
     z-index: 2;
-    color: #0596a3;
-    background-color: #e9ecef;
+    color: var(--primary);
+    background-color: var(--light);
     border-color: #dee2e6
 }
 
 .page-link:focus {
     z-index: 3;
-    color: #0596a3;
+    color: var(--gray);
     background-color: #e9ecef;
     outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(6, 187, 204, 0.25)
+    box-shadow: var(--gray);
 }
 
 .page-item:not(:first-child) .page-link {
@@ -5180,8 +5179,8 @@ fieldset:disabled .btn {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #06BBCC;
-    border-color: #06BBCC
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .page-item.disabled .page-link {
@@ -5447,7 +5446,7 @@ fieldset:disabled .btn {
 
 .list-group-item-action:active {
     color: #52565b;
-    background-color: #e9ecef
+    background-color: var(--primary);
 }
 
 .list-group-item {
@@ -5479,8 +5478,8 @@ fieldset:disabled .btn {
 .list-group-item.active {
     z-index: 2;
     color: #fff;
-    background-color: #06BBCC;
-    border-color: #06BBCC
+    background-color: var(--gray);
+    border-color: var(--primary);
 }
 
 .list-group-item+.list-group-item {
@@ -5519,7 +5518,10 @@ fieldset:disabled .btn {
     margin-left: -1px;
     border-left-width: 1px
 }
-
+.logout:hover{
+    background-color: var(--bs-danger) !important;
+    color: var(--bs-white) !important;
+}
 @media (min-width: 576px) {
     .list-group-horizontal-sm {
         flex-direction: row
@@ -8350,7 +8352,7 @@ fieldset:disabled .btn {
 }
 
 .bg-info {
-    background-color: #0dcaf0 !important
+    background-color: var(--bs-info) !important
 }
 
 .bg-warning {
@@ -8392,6 +8394,7 @@ fieldset:disabled .btn {
 .user-select-auto {
     user-select: auto !important
 }
+
 
 .user-select-none {
     user-select: none !important

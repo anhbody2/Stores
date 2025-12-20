@@ -49,6 +49,7 @@ class ProfileController extends Controller
         
         // Lấy danh sách course_id từ enrolled_courses
         $enrolledCourseIds = json_decode($user->enrolled_courses ?? '[]', true);
+        $enrollments_count = is_array($enrolledCourseIds) ? count($enrolledCourseIds) : 0;
         
         if (!is_array($enrolledCourseIds) || empty($enrolledCourseIds)) {
             $enrolledCourseIds = [];
@@ -60,6 +61,7 @@ class ProfileController extends Controller
         return view('profile.my-courses', [
             'user' => $user, 
             'courses' => $courses,
+            'enrollments_count' => $enrollments_count,
             'totalCourses' => count($enrolledCourseIds)
         ]);
     }

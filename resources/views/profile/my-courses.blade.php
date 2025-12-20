@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-4 text-end">
             <a href="{{ route('courses.index') }}" class="btn btn-outline-primary">
-                <i class="fas fa-plus me-2"></i>Add More Courses
+                <i class="fas fa-plus me-2"></i>Learn New Skills?
             </a>
         </div>
     </div>
@@ -34,21 +34,19 @@
             <div class="card mb-4">
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
-                        <a href="{{ route('user') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('user') }}" class="list-group-item list-group-item-action py-3">
                             <i class="fas fa-user me-2"></i> Profile
                         </a>
-                        <a href="{{ route('my.courses') }}" class="list-group-item list-group-item-action active">
-                            <i class="fas fa-book me-2"></i> My Courses
+                        <a href="{{ route('my.courses') }}" class="list-group-item list-group-item-action active py-3">
+                            <i class="fas fa-book me-2 py-3"></i> My Courses
                             @if($totalCourses > 0)
-                            <span class="badge bg-primary float-end">{{ $totalCourses }}</span>
+                            <span class="badge bg-primary float-end py-3 px-3">{{ $totalCourses }}</span>
                             @endif
                         </a>
-                        <a href="{{ route('courses.index') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('courses.index') }}" class="list-group-item list-group-item-action py-3">
                             <i class="fas fa-search me-2"></i> Browse Courses
                         </a>
-                        <a href="/logout" class="list-group-item list-group-item-action text-danger">
-                            <i class="fas fa-sign-out-alt me-2"></i> Logout
-                        </a>
+                        @include('partials.pagination')
                     </div>
                 </div>
             </div>
@@ -115,20 +113,29 @@
                                 </div>
                             </div>
                             
-                            <!-- Progress (luôn hiển thị 0% vì không có bảng enrollments) -->
-                            <div class="mb-3">
-                                <small class="d-block mb-1">Progress: 0%</small>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-primary" style="width: 0%"></div>
-                                </div>
-                            </div>
+                          
+                           <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <small class="text-muted">Progress</small>
+        <small class="fw-bold text-primary">100%</small>
+    </div>
+    <div class="progress" style="height: 8px; border-radius: 4px;">
+        <div class="progress-bar bg-primary" 
+             style="width: 100%; border-radius: 4px;"
+             role="progressbar" 
+             aria-valuenow="100" 
+             aria-valuemin="0" 
+             aria-valuemax="100">
+        </div>
+    </div>
+</div>
                             
                             <!-- Actions -->
                             <div class="d-grid gap-2">
-                                <a href="{{ route('course.show', $course->course_id) }}" 
-                                   class="btn btn-primary btn-sm">
-                                    <i class="fas fa-play-circle me-1"></i> Continue Learning
-                                </a>
+                                <a href="{{ route('course.learn', $course->course_id) }}" 
+   class="btn btn-primary btn-sm">
+    <i class="fas fa-play-circle me-1"></i> Continue Learning
+</a>
                             </div>
                         </div>
                         

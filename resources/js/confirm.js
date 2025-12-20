@@ -15,7 +15,7 @@ function confirmDelete({
     formId,
     title = 'Are you sure?',
     text = 'This action cannot be undone.',
-    confirmText = 'Delete'
+    confirmText = 'Accept'
 }) {
     Swal.fire({
         title,
