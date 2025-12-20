@@ -113,13 +113,22 @@
                                 </div>
                             </div>
                             
-                            <!-- Progress (luôn hiển thị 0% vì không có bảng enrollments) -->
-                            <div class="mb-3">
-                                <small class="d-block mb-1">Progress: 0%</small>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-primary" style="width: 0%"></div>
-                                </div>
-                            </div>
+                          
+                           <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <small class="text-muted">Progress</small>
+        <small class="fw-bold text-primary">100%</small>
+    </div>
+    <div class="progress" style="height: 8px; border-radius: 4px;">
+        <div class="progress-bar bg-primary" 
+             style="width: 100%; border-radius: 4px;"
+             role="progressbar" 
+             aria-valuenow="100" 
+             aria-valuemin="0" 
+             aria-valuemax="100">
+        </div>
+    </div>
+</div>
                             
                             <!-- Actions -->
                             <div class="d-grid gap-2">

@@ -135,12 +135,56 @@ class CourseController extends Controller
         ]);
     }
 
-    /**
-     * Hiển thị trang checkout cho 1 khóa học
-     */
-    /**
-     * Hiển thị trang checkout cho 1 khóa học
-     */
+   public function learn($id)
+{
+    // 1. Kiểm tra user đã đăng nhập chưa
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Please login to access course videos');
+    }
+
+    $user = Auth::user();
+    
+    // 2. Kiểm tra user đã đăng ký khóa học này chưa
+    $enrolled = $this->getEnrolledCourseIds($user);
+    
+    if (!in_array($id, $enrolled)) {
+        return redirect()->route('course.show', $id)
+            ->with('error', 'You need to enroll in this course first!');
+    }
+    
+    // 3. Lấy thông tin khóa học
+    $course = Course::where('course_id', $id)->firstOrFail();
+    
+    // 4. Lấy danh sách video từ bảng course_videos
+    $courseVideo = CourseVideo::where('course_id', $id)->first();
+    
+    // 5. Parse video URLs từ JSON
+    $videos = [];
+    if ($courseVideo && !empty($courseVideo->videos)) {
+        // Nếu đã cast trong model, nó sẽ tự động là array
+        if (is_array($courseVideo->videos)) {
+            $videos = $courseVideo->videos;
+        } else {
+            // Nếu chưa cast, decode JSON
+            $videos = json_decode($courseVideo->videos, true);
+            if (!is_array($videos)) {
+                $videos = [];
+            }
+        }
+    }
+    
+    // 6. Lấy category và difficulty
+    $category = Category::where('category_id', $course->level)->first();
+    $difficulty = Difficult::find($course->difficulty);
+    
+    return view('courses_page.learn', [
+        'course' => $course,
+        'videos' => $videos,
+        'video_count' => count($videos),
+        'category_name' => $category->category_name ?? 'Unknown',
+        'difficulty_name' => $difficulty->name ?? 'Unknown',
+    ]);
+}
     public function checkout($id)
     {
         if (!Auth::check()) {
