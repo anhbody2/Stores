@@ -135,56 +135,56 @@ class CourseController extends Controller
         ]);
     }
 
-   public function learn($id)
-{
-    // 1. Kiểm tra user đã đăng nhập chưa
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please login to access course videos');
-    }
+    public function learn($id)
+    {
+        // 1. Kiểm tra user đã đăng nhập chưa
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please login to access course videos');
+        }
 
-    $user = Auth::user();
-    
-    // 2. Kiểm tra user đã đăng ký khóa học này chưa
-    $enrolled = $this->getEnrolledCourseIds($user);
-    
-    if (!in_array($id, $enrolled)) {
-        return redirect()->route('course.show', $id)
-            ->with('error', 'You need to enroll in this course first!');
-    }
-    
-    // 3. Lấy thông tin khóa học
-    $course = Course::where('course_id', $id)->firstOrFail();
-    
-    // 4. Lấy danh sách video từ bảng course_videos
-    $courseVideo = CourseVideo::where('course_id', $id)->first();
-    
-    // 5. Parse video URLs từ JSON
-    $videos = [];
-    if ($courseVideo && !empty($courseVideo->videos)) {
-        // Nếu đã cast trong model, nó sẽ tự động là array
-        if (is_array($courseVideo->videos)) {
-            $videos = $courseVideo->videos;
-        } else {
-            // Nếu chưa cast, decode JSON
-            $videos = json_decode($courseVideo->videos, true);
-            if (!is_array($videos)) {
-                $videos = [];
+        $user = Auth::user();
+
+        // 2. Kiểm tra user đã đăng ký khóa học này chưa
+        $enrolled = $this->getEnrolledCourseIds($user);
+
+        if (!in_array($id, $enrolled)) {
+            return redirect()->route('course.show', $id)
+                ->with('error', 'You need to enroll in this course first!');
+        }
+
+        // 3. Lấy thông tin khóa học
+        $course = Course::where('course_id', $id)->firstOrFail();
+
+        // 4. Lấy danh sách video từ bảng course_videos
+        $courseVideo = CourseVideo::where('course_id', $id)->first();
+
+        // 5. Parse video URLs từ JSON
+        $videos = [];
+        if ($courseVideo && !empty($courseVideo->videos)) {
+            // Nếu đã cast trong model, nó sẽ tự động là array
+            if (is_array($courseVideo->videos)) {
+                $videos = $courseVideo->videos;
+            } else {
+                // Nếu chưa cast, decode JSON
+                $videos = json_decode($courseVideo->videos, true);
+                if (!is_array($videos)) {
+                    $videos = [];
+                }
             }
         }
+
+        // 6. Lấy category và difficulty
+        $category = Category::where('category_id', $course->level)->first();
+        $difficulty = Difficult::find($course->difficulty);
+
+        return view('courses_page.learn', [
+            'course' => $course,
+            'videos' => $videos,
+            'video_count' => count($videos),
+            'category_name' => $category->category_name ?? 'Unknown',
+            'difficulty_name' => $difficulty->name ?? 'Unknown',
+        ]);
     }
-    
-    // 6. Lấy category và difficulty
-    $category = Category::where('category_id', $course->level)->first();
-    $difficulty = Difficult::find($course->difficulty);
-    
-    return view('courses_page.learn', [
-        'course' => $course,
-        'videos' => $videos,
-        'video_count' => count($videos),
-        'category_name' => $category->category_name ?? 'Unknown',
-        'difficulty_name' => $difficulty->name ?? 'Unknown',
-    ]);
-}
     public function checkout($id)
     {
         if (!Auth::check()) {
@@ -268,78 +268,10 @@ class CourseController extends Controller
     /**
      * Lấy danh sách course_id đã enroll từ remember_token
      */
-   /**
- * Lấy danh sách course_id đã enroll từ enrolled_courses
- */
-public function learn($id)
-{
-    // 1. Kiểm tra user đã đăng nhập chưa
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please login to access course videos');
-    }
-
-    $user = Auth::user();
-    
-    // 2. Kiểm tra user đã đăng ký khóa học này chưa
-    $enrolled = $this->getEnrolledCourseIds($user);
-    
-    if (!in_array($id, $enrolled)) {
-        return redirect()->route('course.show', $id)
-            ->with('error', 'You need to enroll in this course first!');
-    }
-    
-    // 3. Lấy thông tin khóa học
-    $course = Course::where('course_id', $id)->firstOrFail();
-    
-    // 4. Lấy danh sách video từ bảng course_videos
-    $courseVideo = CourseVideo::where('course_id', $id)->first();
-    
-    // 5. Parse video URLs từ JSON
-    $videos = [];
-    if ($courseVideo && !empty($courseVideo->videos)) {
-        // Nếu đã cast trong model, nó sẽ tự động là array
-        if (is_array($courseVideo->videos)) {
-            $videos = $courseVideo->videos;
-        } else {
-            // Nếu chưa cast, decode JSON
-            $videos = json_decode($courseVideo->videos, true);
-            if (!is_array($videos)) {
-                $videos = [];
-            }
-        }
-    }
-    
-    // 6. Lấy category và difficulty
-    $category = Category::where('category_id', $course->level)->first();
-    $difficulty = Difficult::find($course->difficulty);
-    
-    return view('courses_page.learn', [
-        'course' => $course,
-        'videos' => $videos,
-        'video_count' => count($videos),
-        'category_name' => $category->category_name ?? 'Unknown',
-        'difficulty_name' => $difficulty->name ?? 'Unknown',
-    ]);
-}
-private function getEnrolledCourseIds($user)
-{
-    // ĐỌC TỪ enrolled_courses thay vì remember_token
-    $enrolledCourses = $user->enrolled_courses;
-    
-    if (empty($enrolledCourses)) {
-        return [];
-    }
-    
-    // Nếu enrolled_courses là mảng JSON [1, 2, 3]
-    $decoded = json_decode($enrolledCourses, true);
-    
-    if (is_array($decoded) && !empty($decoded)) {
-        // Kiểm tra phần tử đầu tiên: nếu là số => mảng course_id
-        if (isset($decoded[0]) && is_numeric($decoded[0])) {
-            return $decoded;
     /**
      * Lấy danh sách course_id đã enroll từ enrolled_courses
      */
+    
     private function getEnrolledCourseIds($user)
     {
         // ĐỌC TỪ enrolled_courses thay vì remember_token
@@ -357,22 +289,8 @@ private function getEnrolledCourseIds($user)
             if (isset($decoded[0]) && is_numeric($decoded[0])) {
                 return $decoded;
             }
-            // Nếu là mảng kết hợp (kiểu cũ) => trích xuất course_id
-            $courseIds = [];
-            foreach ($decoded as $item) {
-                if (isset($item['course_id']) && is_numeric($item['course_id'])) {
-                    $courseIds[] = $item['course_id'];
-                }
-            }
-            return $courseIds;
         }
-
-        return [];
     }
-
-    /**
-     * Phương thức enroll cũ (redirect đến checkout)
-     */
     public function enroll(Request $request, $id)
     {
         if (!Auth::check()) {
