@@ -76,7 +76,7 @@ class UserController extends Controller
                 ->with('toastRedirect', '/login');
         } catch (\Exception $e) {
             echo "<script>console.log('Register failed: " . $e->getMessage() . "');</script>";
-              return redirect('/register')->with('toastMessage', 'Register failed')
+              return redirect('/register')->with('toastMessage', $e->getMessage())
                 ->with('toastRedirect', '/register');
             
         }

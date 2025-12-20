@@ -15,6 +15,7 @@ class AdminController extends Controller
     {
         // Users
         $users = User::all();
+        $users3 = User::orderBy('created_at', 'desc')->paginate(3);
         $totalUsers = User::count();
 
         // Courses
@@ -35,6 +36,7 @@ class AdminController extends Controller
         $getLastFourReviews = $this->getLastFourReviews();
         $sortedCourses = $this->sortCoursesByPublishStatus();
         return view('admin_page.admin', [
+            'users3'=> $users3,
             'users' => $users,
             'totalUsers' => $totalUsers,
             'courses' => $courses,

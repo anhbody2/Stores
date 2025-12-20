@@ -1,5 +1,6 @@
 @extends('entry')
 @section('content')
+@auth
 <main class="container">
     <!-- Course Details Section -->
     <div class="row mb-5 course-card rounded-0">
@@ -132,4 +133,6 @@
         </div>
     </div>
 </main>
+
+@endauth
 @endsection

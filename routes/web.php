@@ -12,17 +12,16 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('main_page.main');
-});
+Route::get('/', [ComponentController::class, 'getMain']);
 
+// Authentication routes
 Route::get('/register', [UserController::class, 'GetUser'])->name('register');
 Route::post('/register', [UserController::class, 'register'])->name('register');
 
 Route::get('/login', [UserController::class, 'GetLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.post');
 
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 // ========== COURSE ROUTES ==========
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
@@ -51,18 +50,19 @@ Route::get('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
 
 
-Route::get('/courses', [CourseController::class, 'index'])->name("courses.index");
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
 Route::get('/courses/{id}/edit', [CourseController::class, 'edit']);
 Route::post('/courses/{id}/update', [CourseController::class, 'update']);
-Route::post('/courses/{id}/delete', [CourseController::class, 'softDelete']);
+Route::post('/courses/{id}/delete', [CourseController::class, 'softDelete'])->name('courses.delete');
 
 
 // Component routes
 Route::get('/about', [ComponentController::class, 'getAbout']);
 Route::get('/contact', [ComponentController::class, 'getContact']);
+Route::post('/contact', [ComponentController::class, 'store'])->name('comments.store');
+
 Route::get('/team', [ComponentController::class, 'getTeam']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
 
@@ -74,5 +74,6 @@ Route::get('/forgot-password', function () {
 Route::post('/forgot-password', [ForgotPasswordController::class, 'update'])
     ->name('forgot.password.update');
 // Route for admin dashboard
-Route::get('/admin/dashboard',[AdminController::class, 'index']);
+Route::get('/admin/dashboard', [AdminController::class, 'index']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
+Route::get('/error', [ComponentController::class, 'getError']);

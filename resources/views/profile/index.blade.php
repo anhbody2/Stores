@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('entry')
 
 @section('title', 'User Profile')
 
@@ -9,22 +9,20 @@
             <!-- Sidebar Navigation -->
             <div class="card mb-4">
                 <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
-                        <a href="{{ route('user') }}" class="list-group-item list-group-item-action active">
+                    <div class="list-group list-group-flush lh-lg ">
+                        <a href="{{ route('user') }}" class="list-group-item list-group-item-action active py-3">
                             <i class="fas fa-user me-2"></i> Profile
                         </a>
-                        <a href="{{ route('my.courses') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-book me-2"></i> My Courses
+                        <a href="{{ route('my.courses') }}" class="list-group-item list-group-item-action py-3">
+                            <i class="fas fa-book me-2 py-3 "></i> My Courses
                             @if($enrollments_count > 0)
-                            <span class="badge bg-primary float-end">{{ $enrollments_count }}</span>
+                            <span class="badge bg-primary float-end py-3 px-3">{{ $enrollments_count }}</span>   
                             @endif
                         </a>
-                        <a href="{{ route('courses.index') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('courses.index') }}" class="list-group-item list-group-item-action py-3">
                             <i class="fas fa-search me-2"></i> Browse Courses
                         </a>
-                        <a href="/logout" class="list-group-item list-group-item-action text-danger">
-                            <i class="fas fa-sign-out-alt me-2"></i> Logout
-                        </a>
+                       @include('partials.pagination')
                     </div>
                 </div>
             </div>
@@ -36,18 +34,24 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="me-4">
-                            <div class="avatar-circle" style="width: 80px; height: 80px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-user fa-2x text-secondary"></i>
+                            <div class="avatar-circle" style="
+                            width: 80px; height: 80px;
+                             border-radius: 50%; 
+                             background: url('{{$user -> image}}');
+                             background-position: center ;
+                             background-size:70%;
+                             display: flex; align-items: center; justify-content: center;">
+                                </i>
                             </div>
                         </div>
                         <div>
                             <h3 class="mb-1">{{ $user->name }}</h3>
                             <p class="text-muted mb-2">{{ $user->email }}</p>
                             <div class="d-flex gap-3">
-                                <span class="badge bg-primary">
+                                <span class="badge bg-primary py-3">
                                     <i class="fas fa-book me-1"></i> {{ $enrollments_count }} Courses
                                 </span>
-                                <span class="badge bg-secondary">
+                                <span class="badge bg-secondary py-3">
                                     Member since {{ $user->created_at->format('M Y') }}
                                 </span>
                             </div>
@@ -61,7 +65,7 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Recently Enrolled Courses</h5>
-                    <a href="{{ route('my.courses') }}" class="btn btn-sm btn-outline-primary">
+                    <a href="{{ route('my.courses') }}" class="btn btn-sm btn-primary  py-3 px-3 ">
                         View All
                     </a>
                 </div>
@@ -77,10 +81,8 @@
                                         {{ Str::limit($course->description, 60) }}
                                     </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge bg-info">
-                                            ${{ number_format($course->price) }}
-                                        </span>
-                                        <a href="{{ route('course.show', $course->course_id) }}" class="btn btn-sm btn-primary">
+
+                                        <a href="{{ route('course.show', $course->course_id) }}" class="btn btn-sm btn-primary bg-primary w-100 py-2">
                                             Continue
                                         </a>
                                     </div>
@@ -130,7 +132,7 @@
                         </div>
                     </div>
                     <div class="text-center mt-3">
-                        <a href="{{ route('my.courses') }}" class="btn btn-primary">
+                        <a href="{{ route('my.courses') }}" class="btn btn-primary py-2 px-4 ">
                             <i class="fas fa-book me-2"></i>Go to My Courses
                         </a>
                     </div>

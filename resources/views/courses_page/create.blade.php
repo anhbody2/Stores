@@ -1,50 +1,53 @@
 @extends('entry')
+@push('styles')
+@vite('resources/css/courses/form.css')
+@endpush
 @section('content')
-<h2>Add New Course</h2>
 
-@if(session('success'))
-    <p style="color: green">{{ session('success') }}</p>
-@endif
 
-<form action="/courses/store" method="POST" enctype="multipart/form-data">
-    @csrf
+@if(session('info'))
+            <div class="alert alert-info">{{ session('info') }}</div>
+        @endif
+<div class="wrapper">
+    <div class="flip-card__inner ">
+        <div class="flip-card__front w-100 px-5">
+            <div class="title">Form</div>
+            @if(session('success'))
+            <p class="flip-card__input py-3" style="color: green">{{ session('success') }}</p>
+            @endif
 
-    <label>Course Name:</label><br>
-    <input type="text" name="name" required><br><br>
+            <form class="flip-card__form" action="/courses/store" method="POST" enctype="multipart/form-data">
+                @csrf
 
-    <label>Price:</label><br>
-    <input type="number" name="price" required step="0.01"><br><br>
+                <input class="flip-card__input" type="text" name="name" placeholder="Course name" required>
 
-    <label>Rate:</label><br>
-    <input type="number" name="rate" step="0.01"><br><br>
+                <input class="flip-card__input" type="number" name="price" placeholder="Price" required step="0.01">
 
-    <label>Enrolled Count:</label><br>
-    <input type="number" name="enrolled"><br><br>
+                <input class="flip-card__input" type="number" name="rate" placeholder="Rate" step="0.01">
 
-    <label>Publish Status:</label><br>
-    <select name="publish_status" required>
-        <option value="1">Published</option>
-        <option value="0">Draft</option>
-    </select><br><br>
+                <input class="flip-card__input" type="number" placeholder="Enrolled Testimonial" name="enrolled">
 
-    <label>Category Level:</label><br>
-    <select name="level" required>
-        @foreach($categories as $cat)
-            <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
-        @endforeach
-    </select><br><br>
+                <select class="flip-card__input" name="publish_status" required>
+                    <option value="1">Published</option>
+                    <option value="0">Draft</option>
+                </select>
+                <select class="flip-card__input" name="level" required>
+                    @foreach($categories as $cat)
+                    <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                    @endforeach
+                </select>
 
-    <label>Time Average (minutes):</label><br>
-    <input type="number" name="time_average"><br><br>
+                <input class="flip-card__input" type="number" placeholder="Time Average" name="time_average">
 
-    <label>Description:</label><br>
-    <textarea name="description"></textarea><br><br>
+                <textarea class="flip-card__input" placeholder="Description" name="description"></textarea>
 
-    <label>Image:</label><br>
-    <input type="file" name="image"><br><br>
-    <input type="text" name="image" placeholder="Image URL"><br><br>
-    <button type="submit">Create Course</button>
-</form>
+                <input class="flip-card__input py-3" type="file" name="image">
+                <input class="flip-card__input py-3" name="tutor" value="{{ auth()->user()->name }}">
+                <input class="flip-card__input" type="text" name="image" placeholder="Image URL">
+                <button class="flip-card__btn btn-success" type="submit">Let`s go!</button>
+            </form>
+        </div>
 
-</body>
+    </div>
+</div>
 @endsection

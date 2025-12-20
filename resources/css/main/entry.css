@@ -1,0 +1,80 @@
+    #container3D {
+        background-color: transparent;
+        pointer-events: none;
+    }
+
+    body {
+        height: fit-content;
+        overflow-x: hidden;
+        background-color: #fff;
+        background-image:
+            repeating-linear-gradient(to right, transparent 0 100px,
+                #25283b22 100px 101px),
+            repeating-linear-gradient(to bottom, transparent 0 100px,
+                #25283b22 100px 101px);
+    }
+
+
+    #banner {
+        top: 0;
+        left: 0;
+
+        pointer-events: none;
+        /* do not block mouse interaction */
+        will-change: transform;
+        /* performance hint */
+        width: 100%;
+        height: 100vh;
+    }
+
+    .content {
+        height: fit-content;
+        position: relative;
+        display: flex;
+        flex: 1;
+    }
+
+    h1 {
+        font-family: fangsong;
+        font-size: 370px;
+        text-transform: capitalize;
+    }
+
+    .c-text {
+        color: transparent;
+        padding: 40px;
+        -webkit-text-stroke: 4px var(--dark);
+    }
+
+    .text {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1000;
+    }
+
+    .fonts-medium {
+        padding-top: 400px;
+        font-size: 50px;
+        padding-inline: 72px;
+        text-align: center;
+    }
+    .cursor {
+        pointer-events: none;
+        position: fixed;
+        display: block;
+        border-radius: 0;
+        mix-blend-mode: difference;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+    }
+
+    .circle {
+        position: absolute;
+        display: block;
+        width: 56px;
+        height: 56px;
+        border-radius: 40px;
+        background-color: #fff;
+    }

@@ -48,7 +48,7 @@ function objectSearch(obj, term) {
     return Object.values(obj).some(value =>
         String(value).toLowerCase().includes(term)
     );
-   
+
 }
 
 // Render HTML
@@ -67,7 +67,8 @@ function renderCourses(list) {
         const courseElement = document.createElement('div');
         courseElement.className = 'col';
         courseElement.innerHTML = `
-            <div class="card course-card h-100">
+            <a href="/course/${course.course_id}" class="text-decoration-none text-dark"> 
+                <div class="card course-card h-100">
                 <img src="${course.image}" class="card-img-top course-img" alt="${course.title}">
                 
                 <div class="card-body d-flex flex-column">
@@ -76,7 +77,7 @@ function renderCourses(list) {
                         <span class="d-none">
                             ${course.category}
                         </span>
-                        <span class="badge bg-secondary course-category">
+                        <span class="badge bg-primary course-category">
                             ${course.category_name}
                         </span>
 
@@ -112,12 +113,12 @@ function renderCourses(list) {
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
                         <a href="/course/${course.course_id}" 
-                           class="btn btn-sm btn-outline-primary me-md-2">View Details</a>
+                           class="d-md-none d-block btn btn-sm btn-outline-primary me-md-2">View Details</a>
                         
                         <!-- Enroll Now Form - FIXED: Sử dụng onclick đơn giản -->
                         <form action="/course/${course.course_id}/enroll" method="POST" class="d-inline">
                             <input type="hidden" name="_token" value="${getCsrfToken()}">
-                            <button type="submit" class="btn btn-sm btn-primary">
+                            <button type="submit" class="btn btn-sm btn-primary w-100 d-md-none d-block">
                                 Enroll Now
                             </button>
                         </form>
@@ -125,8 +126,11 @@ function renderCourses(list) {
 
                 </div>
             </div>
+
+
+            </a>
         `;
-        
+
         courseContainer.appendChild(courseElement);
     });
 }
@@ -162,14 +166,14 @@ if (courses.length) {
 }
 
 // Thêm global event listener cho confirm
-document.addEventListener('submit', function(e) {
+document.addEventListener('submit', function (e) {
     if (e.target && e.target.matches('form[action*="/enroll"]')) {
         e.preventDefault();
         const form = e.target;
-        const courseName = form.querySelector('.btn')?.textContent.includes('Enroll Now') 
-            ? 'this course' 
+        const courseName = form.querySelector('.btn')?.textContent.includes('Enroll Now')
+            ? 'this course'
             : 'Course';
-        
+
         if (confirm(`Are you sure you want to enroll in ${courseName}?`)) {
             form.submit();
         }
