@@ -5,7 +5,9 @@
 @section('content')
 
 
-
+@if(session('info'))
+            <div class="alert alert-info">{{ session('info') }}</div>
+        @endif
 <div class="wrapper">
     <div class="flip-card__inner ">
         <div class="flip-card__front w-100 px-5">
@@ -40,7 +42,7 @@
                 <textarea class="flip-card__input" placeholder="Description" name="description"></textarea>
 
                 <input class="flip-card__input py-3" type="file" name="image">
-                <input class="flip-card__input py-3" name="name" value="{{ $user->name }}">
+                <input class="flip-card__input py-3" name="tutor" value="{{ auth()->user()->name }}">
                 <input class="flip-card__input" type="text" name="image" placeholder="Image URL">
                 <button class="flip-card__btn btn-success" type="submit">Let`s go!</button>
             </form>

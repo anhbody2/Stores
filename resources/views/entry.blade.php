@@ -32,6 +32,8 @@
     <!-- Admin CSS -->
     @vite('resources/css/admin/admin.css')
 
+  
+
 </head>
 
 <body>
@@ -79,5 +81,4 @@
     </script>
     @endif
 </body>
-
 </html>

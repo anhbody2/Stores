@@ -222,6 +222,11 @@
     <h2 class="section-title">Browse by Category</h2>
     <p class="text-muted mb-4">Explore courses organized by subject area.</p>
 
+                            <div class="progress category-progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ $category->percentage }}%; background-color: {{$category->color}};"
+                                    aria-valuenow="{{ $category->percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach($categories as $category)
         <div class="col">
@@ -247,6 +252,7 @@
                         </div>
                     </div>
 
+             
                     <div class="mb-3">
                         <p class="small fw-bold mb-1">Popular Courses:</p>
                         <ul class="small mb-0">

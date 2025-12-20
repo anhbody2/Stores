@@ -230,21 +230,18 @@
                 @endif
                 
                 <!-- Progress Summary -->
-               <!-- Progress Summary -->
-<div class="card-footer bg-white border-top">
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="w-100"> <!-- Thêm class w-100 để chiếm toàn bộ chiều rộng -->
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <small class="text-muted">Your Progress</small>
-                <span id="progress-text" class="fw-bold">0/{{ $video_count }}</span>
+                <div class="card-footer bg-white border-top">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted">Your Progress</small>
+                            <div class="progress" style="height: 8px; width: 150px;">
+                                <div id="overall-progress" class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <span id="progress-text" class="fw-bold">0/{{ $video_count }}</span>
+                    </div>
+                </div>
             </div>
-            <!-- Thay đổi width của progress bar thành 100% -->
-            <div class="progress" style="height: 10px;"> <!-- Tăng height cho dễ nhìn -->
-                <div id="overall-progress" class="progress-bar bg-primary" style="width: 0%"></div>
-            </div>
-        </div>
-    </div>
-</div>
             
             <!-- Navigation Buttons -->
             @if(!empty($videos))

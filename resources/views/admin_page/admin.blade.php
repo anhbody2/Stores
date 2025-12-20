@@ -97,8 +97,22 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="/logout"><i
-                                            class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                                <!-- Sidebar Navigation -->
+                                <form class="form_edit" method="POST" id="logout-form">
+                                    @csrf
+
+                                </form>
+                                <li href="/logout" class="dropdown-item"
+                                    onclick="confirmDelete({
+                                                        url: '/logout',
+                                                        formId: 'logout-form',
+                                                        title: 'Log out?',
+                                                        text: 'You are about to log out of your account.',
+                                                        confirmText: 'Log out',
+                                                    })">
+
+                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -332,7 +346,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($users as $user)
+                                    @foreach($users3 as $user)
                                     <tr>
                                         <td>#{{$user->id}}</td>
                                         <td>{{ $user->name }}</td>
@@ -365,15 +379,7 @@
                         </div>
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
+                                {{ $users3->links('pagination::bootstrap-5') }}
                             </ul>
                         </nav>
                     </div>
@@ -509,7 +515,7 @@
                                             <a class="btn btn-sm btn-outline-primary me-1" href="/course/{{$course->course_id }}"><i
                                                     class="fa-regular fa-eye"></i></a>
                                             <a class="btn btn-sm btn-outline-warning me-1" href="/courses/{{ $course->course_id }}/edit"><i
-                                                        class="fa-solid fa-pen"></i></a>
+                                                    class="fa-solid fa-pen"></i></a>
                                             <form class="form_edit" method="POST" id="deleted-courses">
                                                 @csrf
 
