@@ -50,7 +50,8 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         Session::forget('cart');
         Session::forget('user');
-        return redirect('/')->with('success', 'Đăng xuất thành công.');
+        return redirect('/')->with('toastMessage', 'Đăng xuất thành công.')
+                ->with('toastRedirect', '/');
     }
 
     public function GetUser()

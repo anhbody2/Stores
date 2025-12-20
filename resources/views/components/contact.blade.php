@@ -1,6 +1,7 @@
 @extends('entry')
 @section('content')
 
+@auth
 <!-- Contact Start -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -211,5 +212,10 @@
         </div>
     </div>
 </div>
+@else
+<script>
+    window.location = "/login";
+</script>
+@endauth
 <!-- Team End -->
 @endsection
