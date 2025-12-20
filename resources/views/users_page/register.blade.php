@@ -26,6 +26,31 @@
                         <div class="card-header">
                             <h2 class="mb-0">Sign Up</h2>
                         </div>
+                        <div class="card-body">
+
+                            <!-- Hiển thị lỗi validation -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <!-- Hiển thị flash message -->
+                            @if(session('success'))
+                                <div class="alert alert-success">{{ session('success') }}</div>
+                            @endif
+                            @if(session('error'))
+                                <div class="alert alert-danger">{{ session('error') }}</div>
+                            @endif
+
+                            <!-- Form đăng ký -->
+                            <form id="loginForm" method="post" action="{{ route('register') }}">
+                                @csrf
+
 
                         <div class="card-body">
                             <!-- Login Form -->
@@ -83,6 +108,14 @@
                                 <!-- Submit Button -->
                                 <div class="d-grid gap-2 mb-4">
                                     <button type="submit" class="btn btn-login">
+                                        Sign Up
+                                    </button>
+                                </div>
+
+                                <!-- Divider & Social Buttons giữ nguyên -->
+                                <div class="divider">
+                                    <span>Or continue with</span>
+                                </div>
                                         <i class="fas fa-sign-in-alt me-2"></i>Sign In
                                     </button>
                                 </div>

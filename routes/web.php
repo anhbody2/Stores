@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
-
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
@@ -34,6 +34,7 @@ Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('c
 
 // ========== PROFILE ROUTES ==========
 Route::middleware(['auth'])->group(function () {
+    Route::get('/course/{id}/learn', [CourseController::class, 'learn'])->name('course.learn');
     Route::get('/user', [ProfileController::class, 'index'])->name('user');
     Route::get('/profile', [ProfileController::class, 'redirectToUser'])->name('profile');
     Route::get('/my-courses', [ProfileController::class, 'myCourses'])->name('my.courses');
@@ -64,6 +65,14 @@ Route::post('/contact', [ComponentController::class, 'store'])->name('comments.s
 
 Route::get('/team', [ComponentController::class, 'getTeam']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
+
+Route::get('/forgot-password', function () {
+    return view('users_page.forgot-password');
+});
+
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'update'])
+    ->name('forgot.password.update');
 // Route for admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'index']);
 Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);

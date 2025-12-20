@@ -123,10 +123,10 @@
                             
                             <!-- Actions -->
                             <div class="d-grid gap-2">
-                                <a href="{{ route('course.show', $course->course_id) }}" 
-                                   class="btn btn-primary btn-sm">
-                                    <i class="fas fa-play-circle me-1"></i> Continue Learning
-                                </a>
+                                <a href="{{ route('course.learn', $course->course_id) }}" 
+   class="btn btn-primary btn-sm">
+    <i class="fas fa-play-circle me-1"></i> Continue Learning
+</a>
                             </div>
                         </div>
                         
