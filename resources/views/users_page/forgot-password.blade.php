@@ -12,13 +12,13 @@
             </div>
         </div>
 
-        <!-- Right Column - Forgot Password Form -->
+        <!-- Right Column - Change Password Form -->
         <div class="col-lg-6 col-md-6 p-0">
             <div class="form-section">
                 <div class="login-container">
                     <div class="login-card">
                         <div class="card-header">
-                            <h2 class="mb-0">Forgot Password</h2>
+                            <h2 class="mb-0">Change Password</h2>
                         </div>
                         <div class="card-body">
 
@@ -38,7 +38,6 @@
                                 <div class="alert alert-success">{{ session('success') }}</div>
                             @endif
 
-                            <!-- Forgot Password Form -->
                             <form method="post" action="{{ route('forgot.password.update') }}">
                                 @csrf
 
@@ -54,6 +53,24 @@
                                                name="email"
                                                placeholder="name@example.com"
                                                required>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Old Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password"
+                                               class="form-control"
+                                               name="old_password"
+                                               placeholder="Enter old password"
+                                               required>
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -96,7 +113,7 @@
                                 <!-- Submit -->
                                 <div class="d-grid gap-2 mb-4">
                                     <button type="submit" class="btn btn-login">
-                                        Reset Password
+                                        Update Password
                                     </button>
                                 </div>
 

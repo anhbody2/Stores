@@ -8,29 +8,21 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ForgotPasswordController;
-<<<<<<< HEAD
-=======
-use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ComponentController;
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
->>>>>>> 22f36249027fb71731509e44f487d70ed99d5b68
 
 Route::get('/', function () {
     return view('main_page.main');
 });
 
-// Authentication routes
-Route::get('/login', [UserController::class, 'GetLogin']);
-Route::post('/login', [UserController::class, 'login']);
-Route::get('/register', [UserController::class, 'GetUser']);
-Route::post('/register', [UserController::class, 'register']);
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/register', [UserController::class, 'GetUser'])->name('register');
+Route::post('/register', [UserController::class, 'register'])->name('register');
 
+Route::get('/login', [UserController::class, 'GetLogin'])->name('login');
+Route::post('/login', [UserController::class, 'login'])->name('login.post');
+
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 // ========== COURSE ROUTES ==========
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
@@ -58,7 +50,7 @@ Route::get('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
 
 
-Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses', [CourseController::class, 'index'])->name("courses.index");
 Route::get('/courses/create', [CourseController::class, 'create']);
 Route::post('/courses/store', [CourseController::class, 'store']);
 Route::get('/courses/{id}/edit', [CourseController::class, 'edit']);
@@ -75,6 +67,7 @@ Route::get('/testimonial', [ComponentController::class, 'getTestimonial']);
 Route::get('/forgot-password', function () {
     return view('users_page.forgot-password');
 });
+
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'update'])
     ->name('forgot.password.update');
