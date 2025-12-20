@@ -13,10 +13,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 
-use App\Http\Controllers\AdminController;
 
 
 Route::get('/', [ComponentController::class, 'getMain']);
